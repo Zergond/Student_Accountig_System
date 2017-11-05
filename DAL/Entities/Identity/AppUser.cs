@@ -22,9 +22,9 @@ namespace DAL.Entities.Identity
         [Range(0, 120, ErrorMessage = "Age has to be between 0 and 120")]
         public int Age { get; set; }
         [DataType(DataType.DateTime)]
-        public DateTime RegisteredDate { get; set; }
+        public DateTime ? RegisteredDate { get; set; }
         [DataType(DataType.DateTime)]
-        public DateTime StudyDate { get; set; }
+        public DateTime ? StudyDate { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
         {

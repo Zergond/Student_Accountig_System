@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BLL.Identity.Models
@@ -8,6 +9,14 @@ namespace BLL.Identity.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
+        public DateTime RegisteredDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime StudyDate { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -79,6 +88,14 @@ namespace BLL.Identity.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
+        public DateTime RegisteredDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime StudyDate { get; set; }
     }
 
     public class ResetPasswordViewModel

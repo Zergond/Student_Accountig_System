@@ -48,13 +48,15 @@ namespace BLL.Providers
 
         public async Task<IdentityResult> Register(RegisterViewModel model)
         {
-            var user = new AppUser { UserName = model.Email, Email = model.Email };
+            var user = new AppUser { UserName = model.Email, Email = model.Email, Age = model.Age,Name=model.Name,LastName = model.LastName,RegisteredDate = DateTime.Now,StudyDate = model.StudyDate};
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 return result;
             }
+            
             return result;
         }
 
