@@ -6,11 +6,11 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using StudentAccountingSystem.Models;
+using BLL.Identity.Models;
 
 namespace StudentAccountingSystem.Controllers
 {
-    [Authorize]
+    /*[Authorize]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -385,5 +385,5 @@ namespace StudentAccountingSystem.Controllers
         }
 
 #endregion
-    }
+    }*/
 }

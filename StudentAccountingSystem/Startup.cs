@@ -8,7 +8,7 @@ namespace StudentAccountingSystem
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            BLL.Startup.ConfigureAuth(app);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    class AppDBContext: IdentityDbContext<AppUser>, IAppDBContext
+    public class AppDBContext: IdentityDbContext<AppUser>, IAppDBContext
     {
         public AppDBContext() : base("LocalConnection")
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities.Identity
 {
-    class AppUser:IdentityUser
+   public class AppUser:IdentityUser
     {
         [Required]
         [MaxLength(20, ErrorMessage = "Name can't be longer than 20 characters")]
