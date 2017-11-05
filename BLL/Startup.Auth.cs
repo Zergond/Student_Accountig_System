@@ -1,10 +1,10 @@
 ﻿using System;
+using Owin;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
-using Owin;
 using DAL.Entities.Identity;
 using static BLL.Identity.Service;
 
@@ -55,9 +55,9 @@ namespace BLL
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "344680932604115",
+               appSecret: "642730d7b0d492f778b8ca5327768e54");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
