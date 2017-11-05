@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentAccountingSystem", "StudentAccountingSystem\StudentAccountingSystem.csproj", "{7926C767-6BA9-4FCC-B676-C950344B89AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{35AFE1BC-628A-4A53-B39C-253821E399BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{3B3F5EFD-4613-4142-86C8-C0047D68C6EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7926C767-6BA9-4FCC-B676-C950344B89AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7926C767-6BA9-4FCC-B676-C950344B89AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7926C767-6BA9-4FCC-B676-C950344B89AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35AFE1BC-628A-4A53-B39C-253821E399BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35AFE1BC-628A-4A53-B39C-253821E399BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35AFE1BC-628A-4A53-B39C-253821E399BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35AFE1BC-628A-4A53-B39C-253821E399BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B3F5EFD-4613-4142-86C8-C0047D68C6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B3F5EFD-4613-4142-86C8-C0047D68C6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B3F5EFD-4613-4142-86C8-C0047D68C6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B3F5EFD-4613-4142-86C8-C0047D68C6EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
