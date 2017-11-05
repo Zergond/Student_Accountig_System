@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Web;
 using static BLL.Identity.Service;
 
-namespace BLL.Identity
+namespace BLL.Providers
 {
     public class AccountProvider : IAccountProvider
     {
