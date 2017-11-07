@@ -12,7 +12,7 @@ namespace DAL.Entities
 {
     public class AppDBContext: IdentityDbContext<AppUser>, IAppDBContext
     {
-        public AppDBContext() : base("LocalConnection")
+        public AppDBContext() : base("RemoteConnection")
         {
             Database.SetInitializer<AppDBContext>(null);
         }

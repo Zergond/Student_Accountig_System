@@ -295,7 +295,6 @@ namespace Blockchain_bank.Controllers
             {
                 return RedirectToAction("Login");
             }
-            loginInfo.
 
             // Sign in the user with this external login provider if the user already has a login
             var result = await _accountProvider.ExternalSignInAsync(loginInfo);

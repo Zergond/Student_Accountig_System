@@ -57,36 +57,14 @@
     <Compile Include="Entities\DBInitializer.cs" />
     <Compile Include="Entities\Identity\AppRole.cs" />
     <Compile Include="Entities\Identity\AppUser.cs" />
+    <Compile Include="Entities\Models\Student.cs" />
     <Compile Include="Interfaces\IAppDBContext.cs" />
-    <Compile Include="Migrations\201711051451387_Create db identity.cs" />
-    <Compile Include="Migrations\201711051451387_Create db identity.Designer.cs">
-      <DependentUpon>201711051451387_Create db identity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711052049095_Date fix.cs" />
-    <Compile Include="Migrations\201711052049095_Date fix.Designer.cs">
-      <DependentUpon>201711052049095_Date fix.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711052109040_without annotation.cs" />
-    <Compile Include="Migrations\201711052109040_without annotation.Designer.cs">
-      <DependentUpon>201711052109040_without annotation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711051451387_Create db identity.resx">
-      <DependentUpon>201711051451387_Create db identity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711052049095_Date fix.resx">
-      <DependentUpon>201711052049095_Date fix.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711052109040_without annotation.resx">
-      <DependentUpon>201711052109040_without annotation.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
