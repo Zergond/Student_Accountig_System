@@ -7,14 +7,10 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using Owin;
 using StudentAccountingSystem.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using DAL.Entities.Repositories;
 using DAL.Interfaces;
+using BLL.Interfaces;
 
 namespace BLL.Providers
 {
@@ -46,6 +42,8 @@ namespace BLL.Providers
 
             builder.RegisterType<SqlRepository>().As<ISqlRepository>().InstancePerRequest();
             builder.RegisterType<StudentRepository>().As<IStudentRepository>().InstancePerRequest();
+            builder.RegisterType<StudentProvider>().As<IStudentProvider>().InstancePerRequest();
+
 
             base.Load(builder);
         }

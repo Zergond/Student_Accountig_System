@@ -1,5 +1,7 @@
 ﻿using BLL.Identity.Models;
 using DAL.Entities.Identity;
+using DAL.Entities.Models;
+using DAL.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -19,12 +21,14 @@ namespace BLL.Providers
         private readonly ApplicationSignInManager _signInManager;
         private readonly ApplicationUserManager _userManager;
         private readonly IAuthenticationManager _authManager;
+        private readonly IStudentRepository _studentRepository;
 
-        public AccountProvider(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager)
+        public AccountProvider(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager,IStudentRepository studentRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authManager = authManager;
+            _studentRepository = studentRepository;
         }
 
         public async Task<SignInStatus> Login(LoginViewModel model, string returnUrl)
@@ -47,12 +51,28 @@ namespace BLL.Providers
         }
 
         public async Task<IdentityResult> Register(RegisterViewModel model)
-        {
-            var user = new AppUser { UserName = model.Email, Email = model.Email};
+        {         
+            var user = new AppUser
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
+
+                Student student = new Student
+                {
+                    Age = model.Age,
+                    Name = model.Name,
+                    LastName = model.LastName,
+                    StudyDate = model.StudyDate,
+                    RegisteredDate = DateTime.Now
+                };
+                _studentRepository.Add(student);
+                _studentRepository.SaveChanges();
+
                 await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 return result;
             }
