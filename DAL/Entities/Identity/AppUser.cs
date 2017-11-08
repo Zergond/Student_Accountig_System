@@ -14,9 +14,10 @@ namespace DAL.Entities.Identity
 {
    public class AppUser:IdentityUser
     {
-        [ForeignKey("Student")]
+        [ForeignKey("StudentId")]
         public int StudentId { get; set; }
-        public virtual Student student { get; set; }
+        public virtual Student Student { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
         {
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);

@@ -15,7 +15,7 @@ namespace StudentAccountingSystem
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
-            builder.RegisterModule(new DataModule("LocalConnection", app));
+            builder.RegisterModule(new DataModule("RemoteConnection", app));
 
             var container = builder.Build();
 

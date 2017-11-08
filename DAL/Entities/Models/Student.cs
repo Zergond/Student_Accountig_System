@@ -23,6 +23,7 @@ namespace DAL.Entities.Models
         public DateTime RegisteredDate { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime StudyDate { get; set; }
-        public virtual AppUser appUser {get; set;}
+
+        public virtual AppUser AppUser {get; set;}
     }
 }

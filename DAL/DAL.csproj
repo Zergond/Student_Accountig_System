@@ -58,7 +58,11 @@
     <Compile Include="Entities\Identity\AppRole.cs" />
     <Compile Include="Entities\Identity\AppUser.cs" />
     <Compile Include="Entities\Models\Student.cs" />
+    <Compile Include="Entities\Repositories\SqlRepository.cs" />
+    <Compile Include="Entities\Repositories\StudentRepository.cs" />
     <Compile Include="Interfaces\IAppDBContext.cs" />
+    <Compile Include="Interfaces\ISqlRepository.cs" />
+    <Compile Include="Interfaces\IStudentRepository.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
