@@ -63,12 +63,21 @@
     <Compile Include="Interfaces\IAppDBContext.cs" />
     <Compile Include="Interfaces\ISqlRepository.cs" />
     <Compile Include="Interfaces\IStudentRepository.cs" />
+    <Compile Include="Migrations\201711091619396_Add identity and student.cs" />
+    <Compile Include="Migrations\201711091619396_Add identity and student.Designer.cs">
+      <DependentUpon>201711091619396_Add identity and student.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711091619396_Add identity and student.resx">
+      <DependentUpon>201711091619396_Add identity and student.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

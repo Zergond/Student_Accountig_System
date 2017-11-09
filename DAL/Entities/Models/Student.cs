@@ -12,7 +12,8 @@ namespace DAL.Entities.Models
     public class Student
     {
         [Key, ForeignKey("AppUserOf")]
-        public int StudentId { get; set; }
+        [StringLength(maximumLength:128)]
+        public string Id { get; set; }
         [Required]
         [MaxLength(20, ErrorMessage = "Name can't be longer than 20 characters")]
         public string Name { get; set; }
