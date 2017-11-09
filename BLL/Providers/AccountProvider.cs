@@ -53,50 +53,72 @@ namespace BLL.Providers
             return result;
         }
 
-        public bool Register(RegisterViewModel model)
+        public IdentityResult Register(RegisterViewModel model)
         {
-            bool res = false;
-            try
+            //try
+            //{
+            //    using (var uof = _unitOfWork)
+            //    {
+            //        uof.StartTransaction();
+            //        var user = new AppUser
+            //        {
+            //            UserName = model.Email,
+            //            Email = model.Email
+            //        };
+
+            //         result = UserManager.Create(user, model.Password);
+
+            //        if (result.Succeeded)
+            //        {
+            //            Student student = new Student
+            //            {
+            //                Age = model.Age,
+            //                Name = model.Name,
+            //                LastName = model.LastName,
+            //                StudyDate = model.StudyDate,
+            //                RegisteredDate = DateTime.Now
+            //            };
+            //            _studentRepository.Add(student);
+            //            _studentRepository.SaveChanges();
+            //            uof.CommitTransaction();
+            //            return result;
+            //        }
+            //    }
+            //}
+            //catch { }
+
+
+            var user = new AppUser
             {
-                using (var uof = _unitOfWork)
+                UserName = model.Email,
+                Email = model.Email
+            };
+
+           var result = UserManager.Create(user, model.Password);
+            var userCreated = UserManager.Find(user.UserName, user.PasswordHash);
+
+            if (result.Succeeded)
+            {
+                Student student = new Student
                 {
-                    uof.StartTransaction();
-                    var user = new AppUser
-                    {
-                        UserName = model.Email,
-                        Email = model.Email
-                    };
-
-                    var result = UserManager.Create(user, model.Password);
-
-                    if (result.Succeeded)
-                    {
-                        Student student = new Student
-                        {
-                            Age = model.Age,
-                            Name = model.Name,
-                            LastName = model.LastName,
-                            StudyDate = model.StudyDate,
-                            RegisteredDate = DateTime.Now
-                        };
-                        _studentRepository.Add(student);
-                        _studentRepository.SaveChanges();
-                        uof.CommitTransaction();
-
-                    }
-                }
+                    Id=userCreated.Id.ToString(),
+                    Age = model.Age,
+                    Name = model.Name,
+                    LastName = model.LastName,
+                    StudyDate = model.StudyDate,
+                    RegisteredDate = DateTime.Now
+                };
+                _studentRepository.Add(student);
+                _studentRepository.SaveChanges();
             }
-            catch
-            {
-            }
-            return res;
+                return result;
+        }
+            //public async Task<bool> RegisterAsync(RegisterViewModel model)
+            //{
+            //    return await Task.Run(() => this.Register(model));
+            //}
 
-        }
-        public async Task<bool> RegisterAsync(RegisterViewModel model)
-        {
-            return await Task.Run(() => this.Register(model));
-        }
-        public async Task<string> ConfirmEmail(string userId, string code)
+            public async Task<string> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {

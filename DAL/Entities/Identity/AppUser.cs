@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 namespace DAL.Entities.Identity
 {
    public class AppUser:IdentityUser
-    {
-        public virtual Student Student { get; set; }
-
+    {      
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
         {
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             return userIdentity;
         }
+
+        public virtual Student Student { get; set; }
     }
 }

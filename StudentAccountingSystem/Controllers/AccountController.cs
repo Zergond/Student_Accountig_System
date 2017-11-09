@@ -128,17 +128,17 @@ namespace Blockchain_bank.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public  ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _accountProvider.RegisterAsync(model);
-                if (result)
-                               {
+                var result = _accountProvider.Register(model);
+                if (result.Succeeded)
+                {
                     return RedirectToAction("Index", "Home");
                 }
 
-                //AddErrors(result);
+                AddErrors(result);
 
             }
 
