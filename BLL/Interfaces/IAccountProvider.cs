@@ -17,7 +17,9 @@ namespace StudentAccountingSystem.Interfaces
 
         Task<SignInStatus> VerifyCode(VerifyCodeViewModel model);
 
-        Task<IdentityResult> Register(RegisterViewModel model);
+        bool Register(RegisterViewModel model);
+
+        Task<bool> RegisterAsync(RegisterViewModel model);
 
         Task<string> ConfirmEmail(string userId, string code);
 

@@ -25,7 +25,7 @@ namespace BLL.Providers
 
         public void StartTransaction()
         {
-            this._transaction = new TransactionScope();
+            this._transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled); ;
         }
     }
 }

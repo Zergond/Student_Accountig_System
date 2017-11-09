@@ -132,13 +132,14 @@ namespace Blockchain_bank.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _accountProvider.Register(model);
-                if (result.Succeeded)
-                {
+                var result = await _accountProvider.RegisterAsync(model);
+                if (result)
+                               {
                     return RedirectToAction("Index", "Home");
                 }
-                AddErrors(result);
-                
+
+                //AddErrors(result);
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -335,7 +336,7 @@ namespace Blockchain_bank.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                
+
                 var result = await _accountProvider.CreateUserAsync(model);
                 if (result.Succeeded)
                 {
@@ -380,7 +381,7 @@ namespace Blockchain_bank.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        
+
 
         private void AddErrors(IdentityResult result)
         {

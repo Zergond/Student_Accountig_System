@@ -43,6 +43,7 @@ namespace BLL.Providers
             builder.RegisterType<SqlRepository>().As<ISqlRepository>().InstancePerRequest();
             builder.RegisterType<StudentRepository>().As<IStudentRepository>().InstancePerRequest();
             builder.RegisterType<StudentProvider>().As<IStudentProvider>().InstancePerRequest();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
 
 
             base.Load(builder);

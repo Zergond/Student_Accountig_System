@@ -1,4 +1,5 @@
 ﻿using BLL.Identity.Models;
+using BLL.Interfaces;
 using DAL.Entities.Identity;
 using DAL.Entities.Models;
 using DAL.Interfaces;
@@ -16,19 +17,21 @@ using static BLL.Identity.Service;
 
 namespace BLL.Providers
 {
-    public class AccountProvider : IAccountProvider
+    public class AccountProvider:IAccountProvider 
     {
         private readonly ApplicationSignInManager _signInManager;
-        private readonly ApplicationUserManager _userManager;
+        private readonly ApplicationUserManager UserManager;
         private readonly IAuthenticationManager _authManager;
         private readonly IStudentRepository _studentRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AccountProvider(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager,IStudentRepository studentRepository)
+        public AccountProvider(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager,IStudentRepository studentRepository, IUnitOfWork unitOfWork)
         {
-            _userManager = userManager;
+            UserManager = userManager;
             _signInManager = signInManager;
             _authManager = authManager;
             _studentRepository = studentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<SignInStatus> Login(LoginViewModel model, string returnUrl)
@@ -50,51 +53,64 @@ namespace BLL.Providers
             return result;
         }
 
-        public async Task<IdentityResult> Register(RegisterViewModel model)
-        {         
-            var user = new AppUser
+        public bool Register(RegisterViewModel model)
+        {
+            bool res = false;
+            try
             {
-                UserName = model.Email,
-                Email = model.Email
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-
-                Student student = new Student
+                using (var uof = _unitOfWork)
                 {
-                    Age = model.Age,
-                    Name = model.Name,
-                    LastName = model.LastName,
-                    StudyDate = model.StudyDate,
-                    RegisteredDate = DateTime.Now
-                };
-                _studentRepository.Add(student);
-                _studentRepository.SaveChanges();
+                    uof.StartTransaction();
+                    var user = new AppUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email
+                    };
 
-                await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                return result;
+                    var result = UserManager.Create(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        Student student = new Student
+                        {
+                            Age = model.Age,
+                            Name = model.Name,
+                            LastName = model.LastName,
+                            StudyDate = model.StudyDate,
+                            RegisteredDate = DateTime.Now
+                        };
+                        _studentRepository.Add(student);
+                        _studentRepository.SaveChanges();
+                        uof.CommitTransaction();
+
+                    }
+                }
             }
-            
-            return result;
-        }
+            catch
+            {
+            }
+            return res;
 
+        }
+        public async Task<bool> RegisterAsync(RegisterViewModel model)
+        {
+            return await Task.Run(() => this.Register(model));
+        }
         public async Task<string> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
                 return "Error";
             }
-            var result = await _userManager.ConfirmEmailAsync(userId, code);
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
             return result.Succeeded ? "ConfirmEmail" : "Error";
         }
 
         public async Task<bool> ForgotPassword(ForgotPasswordViewModel model)
         {
 
-            var user = await _userManager.FindByNameAsync(model.Email);
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user.Id)))
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
             {
                 return true;
             }
@@ -104,7 +120,7 @@ namespace BLL.Providers
 
         public async Task<string> GetUserIdByEmail(string email)
         {
-            var user = await _userManager.FindByNameAsync(email);
+            var user = await UserManager.FindByNameAsync(email);
             if (user != null)
             {
                 return user.Id;
@@ -114,13 +130,13 @@ namespace BLL.Providers
 
         public async Task<bool> UserWithNameExists(string email)
         {
-            return await _userManager.FindByNameAsync(email) != null;
+            return await UserManager.FindByNameAsync(email) != null;
         }
 
         public async Task<IdentityResult> ResetPassword(string email, string code, string password)
         {
             var userId = await GetUserIdByEmail(email);
-            return await _userManager.ResetPasswordAsync(userId, code, password);
+            return await UserManager.ResetPasswordAsync(userId, code, password);
         }
 
         public async Task<string> GetVerifiedUserIdAsync()
@@ -130,7 +146,7 @@ namespace BLL.Providers
 
         public async Task<IEnumerable<string>> GetValidTwoFactorProvidersAsync(string userId)
         {
-            return await _userManager.GetValidTwoFactorProvidersAsync(userId);
+            return await UserManager.GetValidTwoFactorProvidersAsync(userId);
         }
 
         public async Task<bool> SendCode(string selectedProvider)
@@ -151,12 +167,12 @@ namespace BLL.Providers
         public async Task<IdentityResult> CreateUserAsync(ExternalLoginConfirmationViewModel model)
         {
             var user = new AppUser { UserName = model.Email, Email = model.Email };
-            return await _userManager.CreateAsync(user);
+            return await UserManager.CreateAsync(user);
         }
 
         public async Task<IdentityResult> AddLoginAsync(string email, UserLoginInfo login)
         {
-            return await _userManager.AddLoginAsync(email, login);
+            return await UserManager.AddLoginAsync(email, login);
         }
 
         public async Task SignInAsync(string email, bool isPersistent, bool rememberBrowser)
@@ -167,7 +183,7 @@ namespace BLL.Providers
 
         private async Task<AppUser> GetUserByEmail(string email)
         {
-            return await _userManager.FindByEmailAsync(email);
+            return await UserManager.FindByEmailAsync(email);
         }
 
         public void LogOff()

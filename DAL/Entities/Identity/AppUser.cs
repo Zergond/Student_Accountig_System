@@ -14,8 +14,6 @@ namespace DAL.Entities.Identity
 {
    public class AppUser:IdentityUser
     {
-        [ForeignKey("StudentId")]
-        public int StudentId { get; set; }
         public virtual Student Student { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
