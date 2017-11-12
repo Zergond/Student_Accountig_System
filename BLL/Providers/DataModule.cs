@@ -6,11 +6,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using Owin;
-using StudentAccountingSystem.Interfaces;
+using BLL.Interfaces;
 using System.Web;
 using DAL.Entities.Repositories;
 using DAL.Interfaces;
-using BLL.Interfaces;
 
 namespace BLL.Providers
 {

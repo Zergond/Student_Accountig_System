@@ -10,9 +10,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BLL.Identity;
 using BLL.Identity.Models;
-using StudentAccountingSystem.Interfaces;
+using BLL.Interfaces;
 
-namespace Blockchain_bank.Controllers
+
+namespace StudentAccountingSystem.Controllers
 {
     [Authorize]
     public class AccountController : Controller

@@ -6,13 +6,9 @@ using DAL.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using StudentAccountingSystem.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using static BLL.Identity.Service;
 
 namespace BLL.Providers
@@ -20,14 +16,14 @@ namespace BLL.Providers
     public class AccountProvider:IAccountProvider 
     {
         private readonly ApplicationSignInManager _signInManager;
-        private readonly ApplicationUserManager UserManager;
+        private readonly ApplicationUserManager _userManager;
         private readonly IAuthenticationManager _authManager;
         private readonly IStudentRepository _studentRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public AccountProvider(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager,IStudentRepository studentRepository, IUnitOfWork unitOfWork)
         {
-            UserManager = userManager;
+            _userManager = userManager;
             _signInManager = signInManager;
             _authManager = authManager;
             _studentRepository = studentRepository;
@@ -55,65 +51,45 @@ namespace BLL.Providers
 
         public IdentityResult Register(RegisterViewModel model)
         {
-            //try
-            //{
-            //    using (var uof = _unitOfWork)
-            //    {
-            //        uof.StartTransaction();
-            //        var user = new AppUser
-            //        {
-            //            UserName = model.Email,
-            //            Email = model.Email
-            //        };
-
-            //         result = UserManager.Create(user, model.Password);
-
-            //        if (result.Succeeded)
-            //        {
-            //            Student student = new Student
-            //            {
-            //                Age = model.Age,
-            //                Name = model.Name,
-            //                LastName = model.LastName,
-            //                StudyDate = model.StudyDate,
-            //                RegisteredDate = DateTime.Now
-            //            };
-            //            _studentRepository.Add(student);
-            //            _studentRepository.SaveChanges();
-            //            uof.CommitTransaction();
-            //            return result;
-            //        }
-            //    }
-            //}
-            //catch { }
-
-
-            var user = new AppUser
+            IdentityResult result = new IdentityResult();
+            try
             {
-                UserName = model.Email,
-                Email = model.Email
-            };
-
-           var result = UserManager.Create(user, model.Password);
-            var userCreated = UserManager.Find(user.UserName, user.PasswordHash);
-
-            if (result.Succeeded)
-            {
-                Student student = new Student
+                using (var uof = _unitOfWork)
                 {
-                    Id=userCreated.Id.ToString(),
-                    Age = model.Age,
-                    Name = model.Name,
-                    LastName = model.LastName,
-                    StudyDate = model.StudyDate,
-                    RegisteredDate = DateTime.Now
-                };
-                _studentRepository.Add(student);
-                _studentRepository.SaveChanges();
+                    uof.StartTransaction();
+                    var user = new AppUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email
+                    };
+
+                    result = _userManager.Create(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        Student student = new Student
+                        {
+                            Id = user.Id,
+                            Age = model.Age,
+                            Name = model.Name,
+                            LastName = model.LastName,
+                            StudyDate = model.StudyDate,
+                            RegisteredDate = DateTime.Now
+                        };
+                        _studentRepository.Add(student);
+                        _studentRepository.SaveChanges();
+                        uof.CommitTransaction();
+                        return result;
+                    }
+                }
             }
-                return result;
+            catch
+            {
+            }
+            return result;
         }
-            //public async Task<bool> RegisterAsync(RegisterViewModel model)
+
+        //public async Task<bool> RegisterAsync(RegisterViewModel model)
             //{
             //    return await Task.Run(() => this.Register(model));
             //}
@@ -124,15 +100,15 @@ namespace BLL.Providers
             {
                 return "Error";
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            var result = await _userManager.ConfirmEmailAsync(userId, code);
             return result.Succeeded ? "ConfirmEmail" : "Error";
         }
 
         public async Task<bool> ForgotPassword(ForgotPasswordViewModel model)
         {
 
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user.Id)))
             {
                 return true;
             }
@@ -142,7 +118,7 @@ namespace BLL.Providers
 
         public async Task<string> GetUserIdByEmail(string email)
         {
-            var user = await UserManager.FindByNameAsync(email);
+            var user = await _userManager.FindByNameAsync(email);
             if (user != null)
             {
                 return user.Id;
@@ -152,13 +128,13 @@ namespace BLL.Providers
 
         public async Task<bool> UserWithNameExists(string email)
         {
-            return await UserManager.FindByNameAsync(email) != null;
+            return await _userManager.FindByNameAsync(email) != null;
         }
 
         public async Task<IdentityResult> ResetPassword(string email, string code, string password)
         {
             var userId = await GetUserIdByEmail(email);
-            return await UserManager.ResetPasswordAsync(userId, code, password);
+            return await _userManager.ResetPasswordAsync(userId, code, password);
         }
 
         public async Task<string> GetVerifiedUserIdAsync()
@@ -168,7 +144,7 @@ namespace BLL.Providers
 
         public async Task<IEnumerable<string>> GetValidTwoFactorProvidersAsync(string userId)
         {
-            return await UserManager.GetValidTwoFactorProvidersAsync(userId);
+            return await _userManager.GetValidTwoFactorProvidersAsync(userId);
         }
 
         public async Task<bool> SendCode(string selectedProvider)
@@ -189,12 +165,12 @@ namespace BLL.Providers
         public async Task<IdentityResult> CreateUserAsync(ExternalLoginConfirmationViewModel model)
         {
             var user = new AppUser { UserName = model.Email, Email = model.Email };
-            return await UserManager.CreateAsync(user);
+            return await _userManager.CreateAsync(user);
         }
 
         public async Task<IdentityResult> AddLoginAsync(string email, UserLoginInfo login)
         {
-            return await UserManager.AddLoginAsync(email, login);
+            return await _userManager.AddLoginAsync(email, login);
         }
 
         public async Task SignInAsync(string email, bool isPersistent, bool rememberBrowser)
@@ -205,7 +181,7 @@ namespace BLL.Providers
 
         private async Task<AppUser> GetUserByEmail(string email)
         {
-            return await UserManager.FindByEmailAsync(email);
+            return await _userManager.FindByEmailAsync(email);
         }
 
         public void LogOff()

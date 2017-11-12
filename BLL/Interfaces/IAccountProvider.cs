@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentAccountingSystem.Interfaces
+namespace BLL.Interfaces
 {
     public interface IAccountProvider
     {
