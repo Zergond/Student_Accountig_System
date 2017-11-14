@@ -1,4 +1,5 @@
 ﻿using DAL.Entities.Identity;
+using DAL.Entities.Models;
 using DAL.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -23,6 +24,7 @@ namespace DAL.Entities
             Database.SetInitializer<AppDBContext>(new DBInitializer());
         }
 
+        public DbSet<Student> Students { get; set; }
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class
         {
             return base.Set<TEntity>();

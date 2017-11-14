@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace DAL.Interfaces
     public interface IAppDBContext : IDisposable
     {
         IDbSet<TEntity> Set<TEntity>() where TEntity : class;
+        DbSet<Student>Students { get; set; }
         int SaveChanges();
     }
 

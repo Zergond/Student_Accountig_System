@@ -9,7 +9,6 @@ namespace DAL.Interfaces
 {
     public interface IStudentRepository : ISqlRepository
     {
-       Task <Student> Add(Student student);
-
+       Student Add(Student student);
     }
 }

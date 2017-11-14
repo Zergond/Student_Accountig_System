@@ -5,17 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Entities.Models;
 using DAL.Interfaces;
+using DAL.Entities;
 
 namespace DAL.Entities.Repositories
 {
     public class StudentRepository : SqlRepository, IStudentRepository
     {
+        private readonly IAppDBContext _context;
         public StudentRepository(IAppDBContext context)
             : base(context)
         {
-
+            _context = context;
         }
-        public async Task<Student> Add(Student student)
+        public Student Add(Student student)
         {
             this.Insert(student);
             this.SaveChanges();

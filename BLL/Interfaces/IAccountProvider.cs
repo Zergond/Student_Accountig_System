@@ -19,6 +19,7 @@ namespace BLL.Interfaces
 
         Task<IdentityResult> Register(RegisterViewModel model);
 
+        Task<IdentityResult>ExternalRegister(ExternalLoginConfirmationViewModel model,ExternalLoginInfo info);
 
         Task<string> ConfirmEmail(string userId, string code);
 

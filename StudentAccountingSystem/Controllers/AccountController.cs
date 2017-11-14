@@ -116,38 +116,7 @@ namespace StudentAccountingSystem.Controllers
             }
         }
 
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public  ActionResult Register()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _accountProvider.Register(model);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                AddErrors(result);
-
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
+      
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
@@ -286,6 +255,38 @@ namespace StudentAccountingSystem.Controllers
             }
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountProvider.Register(model);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                AddErrors(result);
+
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
 
         //
         // GET: /Account/ExternalLoginCallback
@@ -339,18 +340,15 @@ namespace StudentAccountingSystem.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-
-                var result = await _accountProvider.CreateUserAsync(model);
+                
+                var result = await _accountProvider.ExternalRegister(model,info);
                 if (result.Succeeded)
                 {
-                    result = await _accountProvider.AddLoginAsync(model.Email, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await _accountProvider.SignInAsync(model.Email, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
-                    }
+                    await _accountProvider.ExternalSignInAsync(info);
+                    return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
+
             }
 
             ViewBag.ReturnUrl = returnUrl;

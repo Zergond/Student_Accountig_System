@@ -87,8 +87,48 @@ namespace BLL.Providers
             }
             return result;
         }
+        public async Task<IdentityResult> ExternalRegister(ExternalLoginConfirmationViewModel model, ExternalLoginInfo info)
+        {
+            IdentityResult result = new IdentityResult();
+            try
+            {
+                using (var uof = _unitOfWork)
+                {
+                    uof.StartTransaction();
+                    var user = new AppUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email
+                    };
 
-            public async Task<string> ConfirmEmail(string userId, string code)
+                    result = await _userManager.CreateAsync(user);
+
+                    if (result.Succeeded)
+                    {                       
+                       
+                        Student student = new Student
+                        {
+                            Id = user.Id,
+                            Age = model.Age,
+                            Name = model.Name,
+                            LastName = model.LastName,
+                            StudyDate = model.StudyDate,
+                            RegisteredDate = DateTime.Now
+                        };
+                        await _studentProvider.CreateAsync(student);
+                        uof.CommitTransaction();
+                        result = await AddLoginAsync(model.Email, info.Login);                           
+                        return result;
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return result;
+        }
+
+        public async Task<string> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
@@ -177,11 +217,11 @@ namespace BLL.Providers
         {
             return await _userManager.FindByEmailAsync(email);
         }
-
         public void LogOff()
         {
             _authManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
+       
     }
 }

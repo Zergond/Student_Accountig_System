@@ -17,8 +17,7 @@ namespace BLL.Providers
 
         public async Task<Status> CreateAsync(Student student)
         {
-
-           await _studentRepository.Add(student);
+            await Task.Run(()=> this._studentRepository.Add(student));
             return Status.Succees;
 
         }

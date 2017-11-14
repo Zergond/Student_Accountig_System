@@ -17,4 +17,5 @@ namespace DAL.Interfaces
         void Insert<TEntity>(TEntity entity) where TEntity : class;
         void SaveChanges();
     }
+    public enum Status { Succees=1,Failure,Dublication }
 }
