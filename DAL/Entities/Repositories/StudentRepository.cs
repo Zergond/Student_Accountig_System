@@ -15,13 +15,12 @@ namespace DAL.Entities.Repositories
         {
 
         }
-        public Student Add(Student student)
+        public async Task<Student> Add(Student student)
         {
             this.Insert(student);
             this.SaveChanges();
             return student;
         }
 
-       
     }
 }

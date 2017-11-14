@@ -119,7 +119,7 @@ namespace StudentAccountingSystem.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public  ActionResult Register()
         {
             return View();
         }
@@ -129,11 +129,11 @@ namespace StudentAccountingSystem.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public  ActionResult Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = _accountProvider.Register(model);
+                var result = await _accountProvider.Register(model);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
@@ -293,6 +293,8 @@ namespace StudentAccountingSystem.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await _accountProvider.GetExternalLoginInfoAsync();
+            var firstName = loginInfo.ExternalIdentity.Claims.First(c => c.Type == "urn:facebook:first_name").Value;
+            var lastName = loginInfo.ExternalIdentity.Claims.First(c => c.Type == "urn:facebook:last_name").Value;
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
@@ -313,7 +315,7 @@ namespace StudentAccountingSystem.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email,Name = firstName,LastName = lastName });
             }
         }
 

@@ -17,9 +17,8 @@ namespace BLL.Interfaces
 
         Task<SignInStatus> VerifyCode(VerifyCodeViewModel model);
 
-        IdentityResult Register(RegisterViewModel model);
+        Task<IdentityResult> Register(RegisterViewModel model);
 
-        //Task<bool> RegisterAsync(RegisterViewModel model);
 
         Task<string> ConfirmEmail(string userId, string code);
 

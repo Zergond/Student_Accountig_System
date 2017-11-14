@@ -37,7 +37,13 @@ namespace DAL.Entities.Repositories
             return GetEntities<TEntity>();
         }
 
-        public TEntity GetById<TEntity>(int id) where TEntity : BaseModel<int>
+
+        public TEntity GetById<TEntity>(int id)  where TEntity : BaseModel<int>
+        {
+            return GetAll<TEntity>()
+                .SingleOrDefault(e => e.Id == id);
+        }
+         public TEntity GetById<TEntity>(string id) where TEntity : BaseModel<string>
         {
             return GetAll<TEntity>()
                 .SingleOrDefault(e => e.Id == id);
@@ -53,11 +59,7 @@ namespace DAL.Entities.Repositories
             _context.SaveChanges();
         }
 
-        public TEntity GetById<TEntity>(string id) where TEntity : BaseModel<string>
-        {
-            return GetAll<TEntity>()
-                .SingleOrDefault(e => e.Id == id);
-        }
+       
     }
     public abstract class BaseModel<T>
     {

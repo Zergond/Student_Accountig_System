@@ -18,16 +18,16 @@ namespace BLL.Providers
         private readonly ApplicationSignInManager _signInManager;
         private readonly ApplicationUserManager _userManager;
         private readonly IAuthenticationManager _authManager;
-        private readonly IStudentRepository _studentRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStudentProvider _studentProvider;
 
-        public AccountProvider(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager,IStudentRepository studentRepository, IUnitOfWork unitOfWork)
+        public AccountProvider(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authManager,IUnitOfWork unitOfWork,IStudentProvider studentProvider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authManager = authManager;
-            _studentRepository = studentRepository;
             _unitOfWork = unitOfWork;
+            _studentProvider = studentProvider;
         }
 
         public async Task<SignInStatus> Login(LoginViewModel model, string returnUrl)
@@ -49,7 +49,7 @@ namespace BLL.Providers
             return result;
         }
 
-        public IdentityResult Register(RegisterViewModel model)
+        public async Task<IdentityResult> Register(RegisterViewModel model)
         {
             IdentityResult result = new IdentityResult();
             try
@@ -63,7 +63,7 @@ namespace BLL.Providers
                         Email = model.Email
                     };
 
-                    result = _userManager.Create(user, model.Password);
+                    result = await _userManager.CreateAsync(user, model.Password);
 
                     if (result.Succeeded)
                     {
@@ -76,8 +76,7 @@ namespace BLL.Providers
                             StudyDate = model.StudyDate,
                             RegisteredDate = DateTime.Now
                         };
-                        _studentRepository.Add(student);
-                        _studentRepository.SaveChanges();
+                        await _studentProvider.CreateAsync(student);
                         uof.CommitTransaction();
                         return result;
                     }
@@ -88,11 +87,6 @@ namespace BLL.Providers
             }
             return result;
         }
-
-        //public async Task<bool> RegisterAsync(RegisterViewModel model)
-            //{
-            //    return await Task.Run(() => this.Register(model));
-            //}
 
             public async Task<string> ConfirmEmail(string userId, string code)
         {
