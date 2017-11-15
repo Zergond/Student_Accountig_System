@@ -4,6 +4,7 @@ using DAL.Entities.Identity;
 using DAL.Entities.Models;
 using DAL.Interfaces;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
@@ -98,11 +99,15 @@ namespace BLL.Providers
                     var user = new AppUser
                     {
                         UserName = model.Email,
-                        Email = model.Email
+                        Email = model.Email,
                     };
-
+                    user.Logins.Add(new IdentityUserLogin
+                    {
+                        LoginProvider = info.Login.LoginProvider,
+                        ProviderKey = info.Login.ProviderKey,
+                        UserId = user.Id
+                    });
                     result = await _userManager.CreateAsync(user);
-
                     if (result.Succeeded)
                     {                       
                        
