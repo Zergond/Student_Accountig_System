@@ -10,11 +10,12 @@ using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using static BLL.Identity.Service;
 
 namespace BLL.Providers
 {
-    public class AccountProvider:IAccountProvider 
+    public class AccountProvider: Controller,IAccountProvider
     {
         private readonly ApplicationSignInManager _signInManager;
         private readonly ApplicationUserManager _userManager;
@@ -79,6 +80,13 @@ namespace BLL.Providers
                         };
                         await _studentProvider.CreateAsync(student);
                         uof.CommitTransaction();
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code },
+                      protocol: Request.Url.Scheme);
+                        await _userManager.SendEmailAsync(user.Id, "Подтверждение электронной почты",
+                                   "Для завершения регистрации перейдите по ссылке:: <a href=\""
+                                                                   + callbackUrl + "\">завершить регистрацию</a>");
                         return result;
                     }
                 }

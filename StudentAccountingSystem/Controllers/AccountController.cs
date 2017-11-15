@@ -273,9 +273,9 @@ namespace StudentAccountingSystem.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _accountProvider.Register(model);
-                if (result.Succeeded)
+                if (result.Succeeded)            
                 {
-                    return RedirectToAction("Index", "Home");
+                    return View("DisplayEmail");
                 }
 
                 AddErrors(result);
