@@ -51,6 +51,33 @@ namespace BLL.Providers
             return result;
         }
 
+        public async Task<bool> CheckIfEmailConfirmed(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindAsync(model.Email, model.Password);
+                if (user != null)
+                {
+                    if (user.EmailConfirmed == true)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        return true;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Не подтвержден email.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неверный логин или пароль");
+                }
+                
+            }
+            return false;
+        }
+
         public async Task<IdentityResult> Register(RegisterViewModel model)
         {
             IdentityResult result = new IdentityResult();
