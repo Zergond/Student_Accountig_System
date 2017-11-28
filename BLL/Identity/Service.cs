@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,25 +23,23 @@ namespace BLL.Identity
         {
             public Task SendAsync(IdentityMessage message)
             {
-                // настройка логина, пароля отправителя
                 var from = "azimut965@gmail.com";
                 var pass = "980704pashok";
 
                 // адрес и порт smtp-сервера, с которого мы и будем отправлять письмо
-                SmtpClient client = new SmtpClient("smtp.gmail.com", 25);
-
+                SmtpClient client = new SmtpClient();
+                client.Port = 587;
+                client.Host = "smtp.gmail.com";
+                client.EnableSsl = true;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential(from, pass);
-                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential(from, pass);
 
-                // создаем письмо: message.Destination - адрес получателя
                 var mail = new MailMessage(from, message.Destination);
                 mail.Subject = message.Subject;
                 mail.Body = message.Body;
                 mail.IsBodyHtml = true;
-
-                return client.SendMailAsync(mail);
+                return client.SendMailAsync(mail); ;
             }
         }
 

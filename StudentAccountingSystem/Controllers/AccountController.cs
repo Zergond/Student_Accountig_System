@@ -50,28 +50,26 @@ namespace StudentAccountingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
-            {
+                if (await _accountProvider.CheckIfEmailConfirmed(model))
+                {
+                    SignInStatus result = await _accountProvider.Login(model, returnUrl);
+                    switch (result)
+                    {
+                        case SignInStatus.Success:
+                            return RedirectToLocal(returnUrl);
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.RequiresVerification:
+                            return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                        case SignInStatus.Failure:
+                        default:
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
+                    }
+                }
+                    ModelState.AddModelError("", "Email is not confirmed.");
 
-                return View(model);
-            }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            SignInStatus result = await _accountProvider.Login(model, returnUrl);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
+            return View(model);
         }
 
         //
@@ -117,9 +115,9 @@ namespace StudentAccountingSystem.Controllers
             }
         }
 
-      
-        // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
+
+        //GET: /Account/ConfirmEmail
+       [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             return View(await _accountProvider.ConfirmEmail(userId, code));
@@ -270,12 +268,13 @@ namespace StudentAccountingSystem.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
-        {
+        {         
             if (ModelState.IsValid)
             {
                 var result = await _accountProvider.Register(model);
                 if (result.Succeeded)            
                 {
+
                     return View("DisplayEmail");
                 }
 

@@ -13,6 +13,8 @@ namespace BLL.Interfaces
     {
         Task<SignInStatus> Login(LoginViewModel model, string returnUrl);
 
+        Task<bool> CheckIfEmailConfirmed(LoginViewModel model);
+
         Task<bool> HasBeenVerifiedAsync();
 
         Task<SignInStatus> VerifyCode(VerifyCodeViewModel model);

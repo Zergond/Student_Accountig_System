@@ -9,7 +9,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using static BLL.Identity.Service;
 
@@ -60,20 +62,9 @@ namespace BLL.Providers
                 {
                     if (user.EmailConfirmed == true)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return true;
                     }
-                    else
-                    {
-                        ModelState.AddModelError("", "Не подтвержден email.");
-                        return false;
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Неверный логин или пароль");
-                }
-                
+                }              
             }
             return false;
         }
@@ -81,47 +72,47 @@ namespace BLL.Providers
         public async Task<IdentityResult> Register(RegisterViewModel model)
         {
             IdentityResult result = new IdentityResult();
+            var user = new AppUser
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
+            
+            Student student = new Student
+            {
+                Id = user.Id,
+                Age = model.Age,
+                Name = model.Name,
+                LastName = model.LastName,
+                StudyDate = model.StudyDate,
+                RegisteredDate = DateTime.Now
+            };
             try
             {
                 using (var uof = _unitOfWork)
                 {
                     uof.StartTransaction();
-                    var user = new AppUser
-                    {
-                        UserName = model.Email,
-                        Email = model.Email
-                    };
 
                     result = await _userManager.CreateAsync(user, model.Password);
 
                     if (result.Succeeded)
                     {
-                        Student student = new Student
-                        {
-                            Id = user.Id,
-                            Age = model.Age,
-                            Name = model.Name,
-                            LastName = model.LastName,
-                            StudyDate = model.StudyDate,
-                            RegisteredDate = DateTime.Now
-                        };
+
                         await _studentProvider.CreateAsync(student);
                         uof.CommitTransaction();
 
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code },
-                      protocol: Request.Url.Scheme);
-                        await _userManager.SendEmailAsync(user.Id, "Подтверждение электронной почты",
-                                   "Для завершения регистрации перейдите по ссылке:: <a href=\""
-                                                                   + callbackUrl + "\">завершить регистрацию</a>");
-                        return result;
                     }
                 }
             }
-            catch
-            {
-            }
-            return result;
+            catch { }
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            string codeHtmlVersion = HttpUtility.UrlEncode(code);
+            string callbackUrl = string.Format("https://localhost:44368/Account/ConfirmEmail?userId={0}&code={1}", user.Id, codeHtmlVersion);
+
+            await _userManager.SendEmailAsync(user.Id, "Подтверждение электронной почты",
+                    "Для завершения регистрации перейдите по ссылке:: <a href=\""
+                    + callbackUrl + "\">завершить регистрацию</a>");
+                return result;
         }
         public async Task<IdentityResult> ExternalRegister(ExternalLoginConfirmationViewModel model, ExternalLoginInfo info)
         {
