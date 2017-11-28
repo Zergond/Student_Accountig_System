@@ -344,8 +344,7 @@ namespace StudentAccountingSystem.Controllers
                 var result = await _accountProvider.ExternalRegister(model,info);
                 if (result.Succeeded)
                 {
-                    await _accountProvider.ExternalSignInAsync(info);
-                    return RedirectToLocal(returnUrl);
+                    return View("DisplayEmail");
                 }
                 AddErrors(result);
 

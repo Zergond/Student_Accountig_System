@@ -117,45 +117,51 @@ namespace BLL.Providers
         public async Task<IdentityResult> ExternalRegister(ExternalLoginConfirmationViewModel model, ExternalLoginInfo info)
         {
             IdentityResult result = new IdentityResult();
+            var user = new AppUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+            };
+            user.Logins.Add(new IdentityUserLogin
+            {
+                LoginProvider = info.Login.LoginProvider,
+                ProviderKey = info.Login.ProviderKey,
+                UserId = user.Id
+            });
+            Student student = new Student
+            {
+                Id = user.Id,
+                Age = model.Age,
+                Name = model.Name,
+                LastName = model.LastName,
+                StudyDate = model.StudyDate,
+                RegisteredDate = DateTime.Now
+            };
             try
             {
                 using (var uof = _unitOfWork)
                 {
                     uof.StartTransaction();
-                    var user = new AppUser
-                    {
-                        UserName = model.Email,
-                        Email = model.Email,
-                    };
-                    user.Logins.Add(new IdentityUserLogin
-                    {
-                        LoginProvider = info.Login.LoginProvider,
-                        ProviderKey = info.Login.ProviderKey,
-                        UserId = user.Id
-                    });
+                    
                     result = await _userManager.CreateAsync(user);
                     if (result.Succeeded)
-                    {                       
-                       
-                        Student student = new Student
-                        {
-                            Id = user.Id,
-                            Age = model.Age,
-                            Name = model.Name,
-                            LastName = model.LastName,
-                            StudyDate = model.StudyDate,
-                            RegisteredDate = DateTime.Now
-                        };
+                    {                                            
                         await _studentProvider.CreateAsync(student);
                         uof.CommitTransaction();
-                        result = await AddLoginAsync(model.Email, info.Login);                           
-                        return result;
+                        result = await AddLoginAsync(model.Email, info.Login);                       
                     }
                 }
             }
             catch
             {
             }
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            string codeHtmlVersion = HttpUtility.UrlEncode(code);
+            string callbackUrl = string.Format("https://localhost:44368/Account/ConfirmEmail?userId={0}&code={1}", user.Id, codeHtmlVersion);
+
+            await _userManager.SendEmailAsync(user.Id, "Подтверждение электронной почты",
+                "Для завершения регистрации перейдите по ссылке:: <a href=\""
+                + callbackUrl + "\">завершить регистрацию</a>");
             return result;
         }
 
