@@ -23,9 +23,14 @@ namespace StudentAccountingSystem
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/csslayout").Include(
+                      "~/Content/bootstrap.min.css",
+                      "~/Content/Admin/font-awesome/css/font-awesome.min.css",
+                      "~/Content/Admin/ioicons/css/ioicons.min.css",
+                      "~/Content/Admin/AdminLTE.min.css",
+                      "~/Content/Admin/skins/skin-blue.min.css"));
+            bundles.Add(new ScriptBundle("~/Scripts/jslayout").Include(
+                "~/Scripts/Admin/adminlte.min.js"));
         }
     }
 }
