@@ -9,11 +9,12 @@ using Microsoft.Owin.Security.Google;
 using DAL.Entities.Identity;
 using Microsoft.Owin.Security.Facebook;
 using static BLL.Identity.Service;
+using DAL.Entities;
 
 namespace BLL
 {
     public partial class Startup
-    {
+    {      
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
         public static void ConfigureAuth(IAppBuilder app)
         {

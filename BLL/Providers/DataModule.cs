@@ -33,7 +33,9 @@ namespace BLL.Providers
                 return context;
             }).AsSelf().InstancePerDependency();
             builder.RegisterType<Service.ApplicationUserStore>().As<IUserStore<AppUser>>().InstancePerRequest();
+            builder.RegisterType<Service.ApplicationRoleStore>().As<IRoleStore<AppRole,string>>().InstancePerRequest();
             builder.RegisterType<Service.ApplicationUserManager>().AsSelf().InstancePerRequest();
+            builder.RegisterType<Service.ApplicationRoleManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<Service.ApplicationSignInManager>().AsSelf().InstancePerRequest();
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => _app.GetDataProtectionProvider()).InstancePerRequest();

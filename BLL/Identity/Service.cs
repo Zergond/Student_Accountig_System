@@ -17,7 +17,7 @@ using System.Net.Mail;
 
 namespace BLL.Identity
 {
-    public class Service
+    public  class Service
     {
         public class EmailService : IIdentityMessageService
         {
@@ -98,12 +98,33 @@ namespace BLL.Identity
                     UserTokenProvider =
                         new DataProtectorTokenProvider<AppUser>(dataProtectionProvider.Create("ASP.NET Identity"));
                 }
-            }
-
-           
-
+            }         
         }
 
+        public class ApplicationRoleManager : RoleManager<AppRole>
+        {
+            public ApplicationRoleManager(IRoleStore<AppRole,string> store)
+                :base(store)
+            {
+
+            }
+        }
+
+        public class ApplicationRoleStore : RoleStore<AppRole>
+        {
+            public ApplicationRoleStore(AppDBContext context)
+                :base(context)
+            {
+
+            }
+        }
+        public class ApplicationUserStore : UserStore<AppUser>
+        {
+            public ApplicationUserStore(AppDBContext context)
+                : base(context)
+            {
+            }
+        }
         // Configure the application sign-in manager which is used in this application.
         public class ApplicationSignInManager : SignInManager<AppUser, string>
         {
@@ -123,12 +144,6 @@ namespace BLL.Identity
             }
         }
 
-        public class ApplicationUserStore : UserStore<AppUser>
-        {
-            public ApplicationUserStore(AppDBContext context)
-                : base(context)
-            {
-            }
-        }
+        
     }
 }

@@ -50,24 +50,31 @@ namespace StudentAccountingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-                if (await _accountProvider.CheckIfEmailConfirmed(model))
+            if (ModelState.IsValid)
+            {
+                if (await _accountProvider.GetUserIdByEmail(model.Email) != "-1")
                 {
-                    SignInStatus result = await _accountProvider.Login(model, returnUrl);
-                    switch (result)
+                    if (await _accountProvider.CheckIfEmailConfirmed(model))
                     {
-                        case SignInStatus.Success:
-                            return RedirectToLocal(returnUrl);
-                        case SignInStatus.LockedOut:
-                            return View("Lockout");
-                        case SignInStatus.RequiresVerification:
-                            return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                        case SignInStatus.Failure:
-                        default:
-                            ModelState.AddModelError("", "Invalid login attempt.");
-                            return View(model);
+                        SignInStatus result = await _accountProvider.Login(model, returnUrl);
+                        switch (result)
+                        {
+                            case SignInStatus.Success:
+                                return RedirectToLocal(returnUrl);
+                            case SignInStatus.LockedOut:
+                                return View("Lockout");
+                            case SignInStatus.RequiresVerification:
+                                return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                            case SignInStatus.Failure:
+                            default:
+                                ModelState.AddModelError("", "Invalid login attempt.");
+                                return View(model);
+                        }
                     }
+                    else { ModelState.AddModelError("", "Email is not confirmed."); }
                 }
-                    ModelState.AddModelError("", "Email is not confirmed.");
+                else { ModelState.AddModelError("", "User is not exists."); }
+            }
 
             return View(model);
         }
@@ -117,7 +124,7 @@ namespace StudentAccountingSystem.Controllers
 
 
         //GET: /Account/ConfirmEmail
-       [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             return View(await _accountProvider.ConfirmEmail(userId, code));
@@ -268,11 +275,11 @@ namespace StudentAccountingSystem.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
-        {         
+        {
             if (ModelState.IsValid)
             {
                 var result = await _accountProvider.Register(model);
-                if (result.Succeeded)            
+                if (result.Succeeded)
                 {
 
                     return View("DisplayEmail");
@@ -316,7 +323,7 @@ namespace StudentAccountingSystem.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email,Name = firstName,LastName = lastName });
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email, Name = firstName, LastName = lastName });
             }
         }
 
@@ -340,8 +347,8 @@ namespace StudentAccountingSystem.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                
-                var result = await _accountProvider.ExternalRegister(model,info);
+
+                var result = await _accountProvider.ExternalRegister(model, info);
                 if (result.Succeeded)
                 {
                     return View("DisplayEmail");

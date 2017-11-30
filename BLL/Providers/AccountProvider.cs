@@ -54,9 +54,7 @@ namespace BLL.Providers
         }
 
         public async Task<bool> CheckIfEmailConfirmed(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
+        {         
                 var user = await _userManager.FindAsync(model.Email, model.Password);
                 if (user != null)
                 {
@@ -65,7 +63,6 @@ namespace BLL.Providers
                         return true;
                     }
                 }              
-            }
             return false;
         }
 
@@ -99,6 +96,7 @@ namespace BLL.Providers
                     {
 
                         await _studentProvider.CreateAsync(student);
+                        await _userManager.AddToRoleAsync(user.Id, "User");
                         uof.CommitTransaction();
 
                     }
@@ -147,6 +145,7 @@ namespace BLL.Providers
                     if (result.Succeeded)
                     {                                            
                         await _studentProvider.CreateAsync(student);
+                        await _userManager.AddToRoleAsync(user.Id, "User");
                         uof.CommitTransaction();
                         result = await AddLoginAsync(model.Email, info.Login);                       
                     }
