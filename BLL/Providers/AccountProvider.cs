@@ -155,8 +155,9 @@ namespace BLL.Providers
             {
             }
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
-            string codeHtmlVersion = HttpUtility.UrlEncode(code);
-            string callbackUrl = string.Format("https://localhost:44368/Account/ConfirmEmail?userId={0}&code={1}", user.Id, codeHtmlVersion);
+            string codeHtmlVersion = HttpUtility.UrlEncode(code);         
+            string callbackUrl=Url.Action("ConfirmEmail", "AccountProvider", new { userId = user.Id, code = code },
+                       protocol: Request.Url.Scheme);
 
             await _userManager.SendEmailAsync(user.Id, "Подтверждение электронной почты",
                 "Для завершения регистрации перейдите по ссылке:: <a href=\""
