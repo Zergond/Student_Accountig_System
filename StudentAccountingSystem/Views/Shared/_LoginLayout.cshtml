@@ -10,8 +10,8 @@
     <title>Admin Panel | Log in</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    @Styles.Render("~/Content/csslayout")
-
+        @Styles.Render("~/Content/csslayout")
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -24,11 +24,10 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>Student</b>System</a>
+            <a href="@Url.Action("Login","Account")"><b>Student</b>System</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
             @RenderBody()
     </div>
 </div>
@@ -36,16 +35,6 @@
 @Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/Scripts/jslayout")
 @RenderSection("scripts", required: false)
-<!-- iCheck -->
-@*<script src="../../plugins/iCheck/icheck.min.js"></script>*@
-@*<script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
-</script>*@
+
 </body>
 </html>

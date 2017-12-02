@@ -14,9 +14,6 @@ namespace BLL.Identity.Models
         public string LastName { get; set; }
         public int Age { get; set; }
         public DateTime RegisteredDate { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime StudyDate { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -89,8 +86,11 @@ namespace BLL.Identity.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public int Age { get; set; }
         public DateTime RegisteredDate { get; set; }
         [DataType(DataType.Date)]

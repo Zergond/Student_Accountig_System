@@ -81,7 +81,7 @@ namespace BLL.Providers
                 Age = model.Age,
                 Name = model.Name,
                 LastName = model.LastName,
-                StudyDate = model.StudyDate,
+                StudyDate = DateTime.Now,
                 RegisteredDate = DateTime.Now
             };
             try
@@ -118,7 +118,7 @@ namespace BLL.Providers
             var user = new AppUser
             {
                 UserName = model.Email,
-                Email = model.Email,
+                Email = model.Email
             };
             user.Logins.Add(new IdentityUserLogin
             {
@@ -132,7 +132,7 @@ namespace BLL.Providers
                 Age = model.Age,
                 Name = model.Name,
                 LastName = model.LastName,
-                StudyDate = model.StudyDate,
+                StudyDate = DateTime.Now,
                 RegisteredDate = DateTime.Now
             };
             try
@@ -156,8 +156,7 @@ namespace BLL.Providers
             }
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
             string codeHtmlVersion = HttpUtility.UrlEncode(code);         
-            string callbackUrl=Url.Action("ConfirmEmail", "AccountProvider", new { userId = user.Id, code = code },
-                       protocol: Request.Url.Scheme);
+            string callbackUrl= string.Format("https://localhost:44368/Account/ConfirmEmail?userId={0}&code={1}", user.Id, codeHtmlVersion);
 
             await _userManager.SendEmailAsync(user.Id, "Подтверждение электронной почты",
                 "Для завершения регистрации перейдите по ссылке:: <a href=\""

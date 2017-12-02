@@ -222,6 +222,7 @@
     <Content Include="Content\Admin\alt\AdminLTE-without-plugins.min.css" />
     <Content Include="Content\Admin\font-awesome\css\font-awesome.css" />
     <Content Include="Content\Admin\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\Admin\icheck\blue.css" />
     <Content Include="Content\Admin\ioicons\css\ionicons.css" />
     <Content Include="Content\Admin\ioicons\css\ionicons.min.css" />
     <Content Include="Content\Admin\skins\skin-black-light.css" />
@@ -286,6 +287,8 @@
     <Content Include="Scripts\Admin\pages\dashboard2.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Admin\icheck\icheck.js" />
+    <Content Include="Scripts\Admin\icheck\icheck.min.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
