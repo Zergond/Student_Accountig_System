@@ -39,8 +39,8 @@ namespace BLL.Providers
             builder.RegisterType<Service.ApplicationSignInManager>().AsSelf().InstancePerRequest();
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => _app.GetDataProtectionProvider()).InstancePerRequest();
-            builder.RegisterType<AccountProvider>().As<IAccountProvider>().InstancePerRequest();
 
+            builder.RegisterType<AccountProvider>().As<IAccountProvider>().InstancePerRequest();
             builder.RegisterType<SqlRepository>().As<ISqlRepository>().InstancePerRequest();
             builder.RegisterType<StudentRepository>().As<IStudentRepository>().InstancePerRequest();
             builder.RegisterType<StudentProvider>().As<IStudentProvider>().InstancePerRequest();

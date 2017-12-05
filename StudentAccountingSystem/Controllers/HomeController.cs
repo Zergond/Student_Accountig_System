@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BLL.Interfaces;
 
 namespace StudentAccountingSystem.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize]
-        public ActionResult Index()
+        private readonly IStudentProvider _studentProvider;
+
+        public HomeController(IStudentProvider studentProvider)
         {
-            return View();
+            _studentProvider = studentProvider;
+        }
+        [Authorize]
+        public async System.Threading.Tasks.Task<ActionResult> Index()
+        {
+            return View(await _studentProvider.GetStudentsAsync());
         }
 
         public ActionResult About()

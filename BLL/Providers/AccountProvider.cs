@@ -71,7 +71,7 @@ namespace BLL.Providers
             IdentityResult result = new IdentityResult();
             var user = new AppUser
             {
-                UserName = model.Email,
+                UserName = model.Name+" "+model.LastName,
                 Email = model.Email
             };
             
@@ -117,7 +117,7 @@ namespace BLL.Providers
             IdentityResult result = new IdentityResult();
             var user = new AppUser
             {
-                UserName = model.Email,
+                UserName = model.Name + " " + model.LastName,
                 Email = model.Email
             };
             user.Logins.Add(new IdentityUserLogin

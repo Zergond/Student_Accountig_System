@@ -20,17 +20,17 @@ namespace StudentAccountingSystem.Controllers
     {
         private readonly IAccountProvider _accountProvider;
 
-        public AccountController(Service.ApplicationUserManager userManager, Service.ApplicationSignInManager signInManager, IAuthenticationManager authManager, IAccountProvider accountProvider)
+        public AccountController(/*Service.ApplicationUserManager userManager,*/ /*Service.ApplicationSignInManager signInManager,*/ IAuthenticationManager authManager, IAccountProvider accountProvider)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            //UserManager = userManager;
+            //SignInManager = signInManager;
             AuthenticationManager = authManager;
             _accountProvider = accountProvider;
         }
 
-        public Service.ApplicationSignInManager SignInManager { get; }
+        //public Service.ApplicationSignInManager SignInManager { get; }
 
-        public Service.ApplicationUserManager UserManager { get; }
+        //public Service.ApplicationUserManager UserManager { get; }
 
         private IAuthenticationManager AuthenticationManager { get; }
 
