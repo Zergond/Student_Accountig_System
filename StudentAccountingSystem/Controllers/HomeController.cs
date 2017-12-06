@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BLL.Interfaces;
+using BLL.Models;
+using System.Net;
 
 namespace StudentAccountingSystem.Controllers
 {
@@ -20,19 +22,26 @@ namespace StudentAccountingSystem.Controllers
         {
             return View(await _studentProvider.GetStudentsAsync());
         }
-
-        public ActionResult About()
+        [Authorize]
+        public async System.Threading.Tasks.Task<ActionResult> Edit(string id)
         {
-            ViewBag.Message = "Your application description page.";
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+             var student = await _studentProvider.GetByIdAsync(id);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+            return View(student);
+        }
+        [Authorize]
+        public async System.Threading.Tasks.Task<ActionResult> Delete()
+        {
 
-            return View();
+            return View(await _studentProvider.GetStudentsAsync());
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }

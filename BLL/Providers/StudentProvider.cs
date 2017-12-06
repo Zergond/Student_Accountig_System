@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.Identity;
 using BLL.Interfaces;
+using BLL.Models;
 using DAL.Entities.Models;
 using DAL.Interfaces;
 
@@ -31,7 +32,7 @@ namespace BLL.Providers
 
         }
 
-        public async Task<Status> DeleteAsync(Student entity)
+        public async Task<Status> DeleteStudentAsync(Student student)
         {
             throw new System.NotImplementedException();
         }
@@ -41,11 +42,15 @@ namespace BLL.Providers
            return await Task.Run(() => _studentRepository.GetAll<Student>().Take(10).ToList());
         }
 
-        public async Task<Student> GetByIdAsync(string id)
+        public Task<Student> GetByIdAsync(string id)
         {
             throw new System.NotImplementedException();
         }
 
-        
+        public Task<Status> EditStudentAsync(EditStudent student, string id)
+        {
+            throw new System.NotImplementedException();
+
+        }
     }
 }

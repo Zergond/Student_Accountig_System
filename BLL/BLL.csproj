@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Identity\Service.cs" />
+    <Compile Include="Identity\Models\EditStudent.cs" />
     <Compile Include="Interfaces\IAccountProvider.cs" />
     <Compile Include="Identity\Models\AccountViewModels.cs" />
     <Compile Include="Identity\Models\IdentityModels.cs" />

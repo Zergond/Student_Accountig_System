@@ -52,7 +52,7 @@ namespace DAL.Entities.Repositories
         public void Insert<TEntity>(TEntity entity) where TEntity : class
         {
             GetEntities<TEntity>().Add(entity);
-        }
+        }    
 
         public void SaveChanges()
         {
