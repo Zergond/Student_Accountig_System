@@ -176,9 +176,9 @@
                                                 @Html.AntiForgeryToken()
 
                                                 <a class="btn btn-default btn-flat" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-                                                                                             
+
                                             }
-                                            
+
 
                                         }
                                         
@@ -252,9 +252,11 @@
                     Page Header
                     <small>Optional description</small>
                 </h1>
+                @{string curcontroller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();}
+                @{string curaction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();}
                 <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                    <li class="active">Here</li>
+                    <li><a href="#"><i class="fa fa-dashboard"></i>@Html.ActionLink(curcontroller,curaction)</a></li>
+                    <li class="active">@curaction</li>
                 </ol>
             </section>
             <!-- Main content -->

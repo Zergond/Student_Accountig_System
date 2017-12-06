@@ -9,7 +9,9 @@
 <h2>@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
 {
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.AntiForgeryToken()
     <h4>Create a new account.</h4>
     <div class="form-group has-feedback">
@@ -33,7 +35,7 @@
         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
     </div>
     <div class="form-group has-feedback">
-        @Html.PasswordFor(m=> m.Password,new {@class="form-control",@placeholder="Password"})
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
     </div>

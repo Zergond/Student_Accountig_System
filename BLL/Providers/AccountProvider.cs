@@ -100,6 +100,8 @@ namespace BLL.Providers
                         uof.CommitTransaction();
 
                     }
+                    else
+                        return result;
                 }
             }
             catch { }
@@ -143,12 +145,14 @@ namespace BLL.Providers
                     
                     result = await _userManager.CreateAsync(user);
                     if (result.Succeeded)
-                    {                                            
+                    {
                         await _studentProvider.CreateAsync(student);
                         await _userManager.AddToRoleAsync(user.Id, "User");
                         uof.CommitTransaction();
-                        result = await AddLoginAsync(model.Email, info.Login);                       
+                        result = await AddLoginAsync(model.Email, info.Login);
                     }
+                    else
+                        return result;
                 }
             }
             catch

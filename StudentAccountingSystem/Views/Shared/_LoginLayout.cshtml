@@ -11,6 +11,32 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         @Styles.Render("~/Content/csslayout")
+    <style type="text/css">
+        /* Styles for validation helpers*/
+        .field-validation-error {
+            color: #ff0000;
+        }
+
+        .field-validation-valid {
+            display: none;
+        }
+
+        .input-validation-error {
+            border: 1px solid #ff0000 !important;
+            background-color: #ffeeee !important;
+        }
+
+        .validation-summary-errors {
+            font-weight: bold !important;
+            color: #ff0000 !important;
+        }
+
+        .validation-summary-valid {
+            display: none;
+        }
+    </style>
+
+
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
