@@ -17,6 +17,11 @@ namespace StudentAccountingSystem.Controllers
         {
             _studentProvider = studentProvider;
         }
+
+        //[HttpGet]
+        //[ActionName("GetStudents")]
+        //public IList<>
+
         [Authorize]
         public async System.Threading.Tasks.Task<ActionResult> Index()
         {

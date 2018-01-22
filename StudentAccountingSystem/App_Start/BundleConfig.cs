@@ -28,9 +28,12 @@ namespace StudentAccountingSystem
                       "~/Content/Admin/font-awesome/css/font-awesome.min.css",
                       "~/Content/Admin/ioicons/css/ioicons.min.css",
                       "~/Content/Admin/AdminLTE.min.css",
-                      "~/Content/Admin/skins/skin-blue.min.css"));
+                      "~/Content/Admin/skins/skin-blue.min.css",
+                      "~/Content/Admin/jsgrid.min.css",
+                      "~/Content/Admin/jsgrid-theme.min.css"));
             bundles.Add(new ScriptBundle("~/Scripts/jslayout").Include(
-                "~/Scripts/Admin/adminlte.min.js"));
+                "~/Scripts/Admin/adminlte.min.js",
+                "~/Scripts/Admin/jsgrid.min.js"));
         }
     }
 }

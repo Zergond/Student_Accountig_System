@@ -225,6 +225,8 @@
     <Content Include="Content\Admin\icheck\blue.css" />
     <Content Include="Content\Admin\ioicons\css\ionicons.css" />
     <Content Include="Content\Admin\ioicons\css\ionicons.min.css" />
+    <Content Include="Content\Admin\jsgrid-theme.min.css" />
+    <Content Include="Content\Admin\jsgrid.min.css" />
     <Content Include="Content\Admin\skins\skin-black-light.css" />
     <Content Include="Content\Admin\skins\skin-black-light.min.css" />
     <Content Include="Content\Admin\skins\skin-black.css" />
@@ -283,6 +285,8 @@
     <Content Include="Scripts\Admin\adminlte.js" />
     <Content Include="Scripts\Admin\adminlte.min.js" />
     <Content Include="Scripts\Admin\demo.js" />
+    <Content Include="Scripts\Admin\jsgrid-ru.js" />
+    <Content Include="Scripts\Admin\jsgrid.min.js" />
     <Content Include="Scripts\Admin\pages\dashboard.js" />
     <Content Include="Scripts\Admin\pages\dashboard2.js" />
     <Content Include="Scripts\bootstrap.js" />
