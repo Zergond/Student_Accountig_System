@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using BLL.Interfaces;
 using BLL.Models;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace StudentAccountingSystem.Controllers
 {
@@ -23,9 +24,17 @@ namespace StudentAccountingSystem.Controllers
         //public IList<>
 
         [Authorize]
-        public async System.Threading.Tasks.Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await _studentProvider.GetStudentsAsync());
+            return View();
+        }
+
+        [Authorize]        
+        public async System.Threading.Tasks.Task<JsonResult> GetStudents()
+        {
+            var studentlist = await _studentProvider.GetStudentsAsync();
+            return Json(studentlist, JsonRequestBehavior.AllowGet);
+            //return View(await _studentProvider.GetStudentsAsync());
         }
         [Authorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(string id)

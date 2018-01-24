@@ -134,6 +134,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -356,7 +357,7 @@
       <Name>BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\DAL\DAL.csproj">
-      <Project>{35AFE1BC-628A-4A53-B39C-253821E399BB}</Project>
+      <Project>{35afe1bc-628a-4a53-b39c-253821e399bb}</Project>
       <Name>DAL</Name>
     </ProjectReference>
   </ItemGroup>

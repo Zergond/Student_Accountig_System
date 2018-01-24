@@ -32,8 +32,8 @@ namespace StudentAccountingSystem
                       "~/Content/Admin/jsgrid.min.css",
                       "~/Content/Admin/jsgrid-theme.min.css"));
             bundles.Add(new ScriptBundle("~/Scripts/jslayout").Include(
-                "~/Scripts/Admin/adminlte.min.js",
-                "~/Scripts/Admin/jsgrid.min.js"));
+                "~/Scripts/Admin/adminlte.min.js"
+                ));
         }
     }
 }

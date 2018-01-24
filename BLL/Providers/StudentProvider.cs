@@ -37,9 +37,12 @@ namespace BLL.Providers
             throw new System.NotImplementedException();
         }
 
-        public async Task<List<Student>> GetStudentsAsync()
+        public async Task<object> GetStudentsAsync()
         {
-           return await Task.Run(() => _studentRepository.GetAll<Student>().Take(10).ToList());
+           var qstudent= await Task.Run(() => _studentRepository.GetAll<Student>());
+           return qstudent.Select(s => new
+           { Id = s.Id, Name = s.Name,   LastName = s.LastName, Age = s.Age, RegisteredDate = s.RegisteredDate, StudyDate = s.StudyDate }).ToList();
+
         }
 
         public Task<Student> GetByIdAsync(string id)

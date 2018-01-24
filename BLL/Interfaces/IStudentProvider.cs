@@ -11,7 +11,7 @@ namespace BLL.Interfaces
     public interface IStudentProvider
     {
         Task<Status> DeleteStudentAsync(Student student);
-        Task<List<Student>> GetStudentsAsync();
+        Task<object> GetStudentsAsync();
         Task<Student> GetByIdAsync(string id);
         Task<Status> CreateAsync(Student student);
         Task<Status> EditStudentAsync(EditStudent student,string id);
