@@ -33,8 +33,7 @@ namespace StudentAccountingSystem.Controllers
         public async System.Threading.Tasks.Task<JsonResult> GetStudents()
         {
             var studentlist = await _studentProvider.GetStudentsAsync();
-            return Json(studentlist, JsonRequestBehavior.AllowGet);
-            //return View(await _studentProvider.GetStudentsAsync());
+            return Json(studentlist, JsonRequestBehavior.AllowGet);          
         }
         [Authorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(string id)

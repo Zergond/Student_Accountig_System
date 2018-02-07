@@ -10,61 +10,80 @@
 </p>
 
 
+<div id="jsGrid"></div>
 
-@*<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AppUserOf.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Age)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RegisteredDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StudyDate)
-        </th>
-        <th></th>
-    </tr>
+@section scripts {
+    <script src="~/Scripts/Admin/jsgrid.min.js"></script>
+    <script>
+    $(document).ready( $(function(){
+        $("#jsGrid").jsGrid({
+            height: "auto",
+            width: "100%",
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AppUserOf.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Age)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RegisteredDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudyDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new {id = item.Id})|
-            @Html.ActionLink("Delete", "Delete", new {id = item.Id})            
-        </td>
-    </tr>
-}
+            filtering: true,
+            inserting: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
 
-</table>*@
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            deleteConfirm: "Do you really want to delete this student?",
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/Home/GetStudents",
+                        data: filter,
+                        dataType: "JSON"
+                    }).done(function (result) {
+                        debugger;
+                        console.log(result);
+                    });
+                },
+
+                insertItem: function(item) {
+                    return $.ajax({
+                        type: "POST",
+                        url: "/api/data",
+                        data:item,
+                        dataType: "json"
+                    });
+                },
+
+                updateItem: function(item) {
+                    return $.ajax({
+                        type: "PUT",
+                        url: "/api/data/" + item.ID,
+                        data: item,
+                        dataType: "json"
+                    });
+                },
+
+                deleteItem: function(item) {
+                    return $.ajax({
+                        type: "DELETE",
+                        url: "/api/data/" + item.ID,
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                 { name: "Id", type: "text", width: 150 },
+                 { name: "Name", type: "text", width: 150 },
+                 { name: "LastName", type: "text", width: 150 },
+                 { name: "Age", type: "text", width: 150 },
+                 { name: "RegisteredDate", type: "text", width: 150 },
+                 { name: "StudyDate", type: "text", width: 150 },
+                { type: "control" }
+            ]
+        });
+
+    }));
+    </script>
+    }
+

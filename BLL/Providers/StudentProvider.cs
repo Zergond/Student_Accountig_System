@@ -41,7 +41,7 @@ namespace BLL.Providers
         {
            var qstudent= await Task.Run(() => _studentRepository.GetAll<Student>());
            return qstudent.Select(s => new
-           { Id = s.Id, Name = s.Name,   LastName = s.LastName, Age = s.Age, RegisteredDate = s.RegisteredDate, StudyDate = s.StudyDate }).ToList();
+           { Id = s.Id, Name = s.Name,   LastName = s.LastName, Age = s.Age, RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString() }).ToList();
 
         }
 
