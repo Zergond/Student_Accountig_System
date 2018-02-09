@@ -43,19 +43,22 @@ namespace BLL.Providers
             return qstudent.Select(s => new
             { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age, RegisteredDate = s.RegisteredDate, StudyDate = s.StudyDate }).ToList();           
         }
-        public async Task<object> GetStudentsAsyncByFilter(string Id,string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
+        public async Task<object> GetStudentsAsyncByFilter(string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
         {
             Student s = new Student();
-            s.Id = Id;
             s.Name = Name;
             s.LastName = LastName;
+            if(Age!="")
             s.Age=Int32.Parse(Age);
+            if(StudyDate!="")
             s.StudyDate = DateTime.Parse(StudyDate);
+            if(RegisteredDate!="")
             s.RegisteredDate = DateTime.Parse(RegisteredDate);
 
             var qstudent = await Task.Run(() => _studentRepository.GetAll<Student>());
-            return qstudent.Select(a => new
-            { Id = a.Id, Name = a.Name, LastName = a.LastName, Age = a.Age, RegisteredDate = a.RegisteredDate, StudyDate = a.StudyDate }).Where(a=>a.Name.Contains(s.Name));
+            var sel = qstudent.Select(a => new { Id = a.Id, Name = a.Name, LastName = a.LastName, Age = a.Age, RegisteredDate = a.RegisteredDate, StudyDate = a.StudyDate });
+            return sel.Where(a => a.Name.Contains(s.Name) && a.LastName.Contains(s.LastName) && a.Age.ToString().Contains(Age) && a.RegisteredDate.ToString().Contains(RegisteredDate));
+
         }
 
         public Task<Student> GetByIdAsync(string id)
