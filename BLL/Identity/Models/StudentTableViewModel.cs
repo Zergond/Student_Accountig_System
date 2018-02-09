@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BLL.Models
 {
-    public class EditStudent
+    public class StudentTableViewModel
     {
+      
         [Required]
         [MaxLength(20, ErrorMessage = "Name name can't be longer than 20 characters")]
         public string Name { get; set; }
@@ -16,5 +18,7 @@ namespace BLL.Models
         public int Age { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime StudyDate { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime RegisteredDate { get; set; }
     }
 }

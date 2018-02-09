@@ -30,10 +30,18 @@ namespace StudentAccountingSystem.Controllers
         }
 
         [Authorize]        
-        public async System.Threading.Tasks.Task<JsonResult> GetStudents()
+        public async System.Threading.Tasks.Task<ActionResult> GetStudents(string Id, string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
         {
+            if(Id!=""||Name!=""||LastName!=""||Age!=""||StudyDate!=""||RegisteredDate!="")
+            {
+               var studentlistbyfilter = await _studentProvider.GetStudentsAsyncByFilter(Id, Name, LastName, Age, StudyDate, RegisteredDate);
+               var jsonbyfilter = JsonConvert.SerializeObject(studentlistbyfilter);
+               return Content(jsonbyfilter, "application/json");
+            }
             var studentlist = await _studentProvider.GetStudentsAsync();
-            return Json(studentlist, JsonRequestBehavior.AllowGet);          
+            var json = JsonConvert.SerializeObject(studentlist);
+            return Content(json, "application/json");
+            //return Json(studentlist, JsonRequestBehavior.AllowGet);          
         }
         [Authorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(string id)
