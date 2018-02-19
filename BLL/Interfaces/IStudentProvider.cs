@@ -11,8 +11,8 @@ namespace BLL.Interfaces
     public interface IStudentProvider
     {
         Task<Status> DeleteStudentAsync(Student student);
-        Task<object> GetStudentsAsync();
-        Task<object> GetStudentsAsyncByFilter(string Name, string LastName, string Age, string StudyDate, string RegisteredDate);
+        Task<List<StudentTableViewModel>> GetStudentsAsync();
+        Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string Name, string LastName, string Age, string StudyDate, string RegisteredDate);
         Task<Student> GetByIdAsync(string id);
         Task<Status> CreateAsync(Student student);
         Task<Status> EditStudentAsync(StudentTableViewModel student,string id);

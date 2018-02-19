@@ -282,14 +282,25 @@
     <Content Include="Content\Admin\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\Admin\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\Admin\font-awesome\fonts\FontAwesome.otf" />
+    <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\Admin\adminlte.js" />
     <Content Include="Scripts\Admin\adminlte.min.js" />
     <Content Include="Scripts\Admin\demo.js" />
+    <Content Include="Scripts\Admin\InputMask\jquery.inputmask.date.extensions.js" />
+    <Content Include="Scripts\Admin\InputMask\jquery.inputmask.date.extensions.min.js">
+      <DependentUpon>jquery.inputmask.date.extensions.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Admin\InputMask\jquery.inputmask.extensions.js" />
+    <Content Include="Scripts\Admin\InputMask\jquery.inputmask.extensions.min.js">
+      <DependentUpon>jquery.inputmask.extensions.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\Admin\InputMask\jquery.inputmask.js" />
+    <Content Include="Scripts\Admin\InputMask\jquery.inputmask.min.js">
+      <DependentUpon>jquery.inputmask.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\Admin\jsgrid-ru.js" />
     <Content Include="Scripts\Admin\jsgrid.min.js" />
-    <Content Include="Scripts\Admin\pages\dashboard.js" />
-    <Content Include="Scripts\Admin\pages\dashboard2.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Admin\icheck\icheck.js" />

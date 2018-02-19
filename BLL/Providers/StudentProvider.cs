@@ -37,27 +37,29 @@ namespace BLL.Providers
             throw new System.NotImplementedException();
         }
 
-        public async Task<object> GetStudentsAsync()
+        public async Task<List<StudentTableViewModel>> GetStudentsAsync()
         {
-           var qstudent= await Task.Run(() => _studentRepository.GetAll<Student>());
-            return qstudent.Select(s => new
-            { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age, RegisteredDate = s.RegisteredDate, StudyDate = s.StudyDate }).ToList();           
+           var qstudent= await Task.Run(() => _studentRepository.GetAll<Student>().ToList());
+            List<StudentTableViewModel> tableView = new List<StudentTableViewModel>();
+            tableView = qstudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString()}).ToList();
+            
+            foreach(Student s in qstudent)
+            {
+               foreach(StudentTableViewModel sv in tableView )
+                {
+                    sv.RegisteredDate = s.RegisteredDate.ToString(@"MM\/dd\/yyyy");
+                    sv.StudyDate = s.StudyDate.ToString(@"MM\/dd\/yyyy");
+                }
+            }
+            return tableView;
         }
-        public async Task<object> GetStudentsAsyncByFilter(string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
+        public async Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
         {
-            Student s = new Student();
-            s.Name = Name;
-            s.LastName = LastName;
-            if(Age!="")
-            s.Age=Int32.Parse(Age);
-            if(StudyDate!="")
-            s.StudyDate = DateTime.Parse(StudyDate);
-            if(RegisteredDate!="")
-            s.RegisteredDate = DateTime.Parse(RegisteredDate);
+            var listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().ToList());
+            List<StudentTableViewModel> tableView = new List<StudentTableViewModel>();
+            tableView = listStudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString() }).ToList();
 
-            var qstudent = await Task.Run(() => _studentRepository.GetAll<Student>());
-            var sel = qstudent.Select(a => new { Id = a.Id, Name = a.Name, LastName = a.LastName, Age = a.Age, RegisteredDate = a.RegisteredDate, StudyDate = a.StudyDate });
-            return sel.Where(a => a.Name.Contains(s.Name) && a.LastName.Contains(s.LastName) && a.Age.ToString().Contains(Age) && a.RegisteredDate.ToString().Contains(RegisteredDate));
+            return tableView.Where(a => a.Name.Contains(Name) && a.LastName.Contains(LastName) && a.Age.Contains(Age) && a.RegisteredDate.Contains(RegisteredDate)).ToList();
 
         }
 

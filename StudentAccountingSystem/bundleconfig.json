@@ -1,0 +1,20 @@
+[
+  {
+    "outputFileName": "Scripts/Admin/InputMask/jquery.inputmask.date.extensions.min.js",
+    "inputFiles": [
+      "Scripts/Admin/InputMask/jquery.inputmask.date.extensions.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Admin/InputMask/jquery.inputmask.extensions.min.js",
+    "inputFiles": [
+      "Scripts/Admin/InputMask/jquery.inputmask.extensions.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Admin/InputMask/jquery.inputmask.min.js",
+    "inputFiles": [
+      "Scripts/Admin/InputMask/jquery.inputmask.js"
+    ]
+  }
+]
