@@ -19,10 +19,6 @@ namespace StudentAccountingSystem.Controllers
             _studentProvider = studentProvider;
         }
 
-        //[HttpGet]
-        //[ActionName("GetStudents")]
-        //public IList<>
-
         [Authorize]
         public ActionResult Index()
         {
@@ -30,32 +26,22 @@ namespace StudentAccountingSystem.Controllers
         }
 
         [Authorize]        
-        public async System.Threading.Tasks.Task<ActionResult> GetStudents(string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
+        public async System.Threading.Tasks.Task<ActionResult> GetStudents(string Id,string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
         {
-            if(Name!=""||LastName!=""||Age!=""||StudyDate!=""||RegisteredDate!="")
+            if(Id!=""||Name!=""||LastName!=""||Age!=""||StudyDate!=""||RegisteredDate!="")
             {
-               var studentlistbyfilter = await _studentProvider.GetStudentsAsyncByFilter(Name, LastName, Age, StudyDate, RegisteredDate);
+               var studentlistbyfilter = await _studentProvider.GetStudentsAsyncByFilter(Id, Name, LastName, Age, StudyDate, RegisteredDate);
                var jsonbyfilter = JsonConvert.SerializeObject(studentlistbyfilter);
                return Content(jsonbyfilter, "application/json");
             }
             var studentlist = await _studentProvider.GetStudentsAsync();
             var json = JsonConvert.SerializeObject(studentlist);
-            return Content(json, "application/json");
-            //return Json(studentlist, JsonRequestBehavior.AllowGet);          
+            return Content(json, "application/json");        
         }
         [Authorize]
-        public async System.Threading.Tasks.Task<ActionResult> Edit(string id)
+        public async System.Threading.Tasks.Task<ActionResult> Edit(string Id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-             var student = await _studentProvider.GetByIdAsync(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            return View(student);
+            return View();
         }
         [Authorize]
         public async System.Threading.Tasks.Task<ActionResult> Delete()

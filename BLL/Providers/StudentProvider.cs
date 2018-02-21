@@ -39,27 +39,23 @@ namespace BLL.Providers
 
         public async Task<List<StudentTableViewModel>> GetStudentsAsync()
         {
-           var qstudent= await Task.Run(() => _studentRepository.GetAll<Student>().ToList());
+           var listStudent= await Task.Run(() => _studentRepository.GetAll<Student>().ToList());
             List<StudentTableViewModel> tableView = new List<StudentTableViewModel>();
-            tableView = qstudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString()}).ToList();
-            
-            foreach(Student s in qstudent)
-            {
-               foreach(StudentTableViewModel sv in tableView )
-                {
-                    sv.RegisteredDate = s.RegisteredDate.ToString(@"MM\/dd\/yyyy");
-                    sv.StudyDate = s.StudyDate.ToString(@"MM\/dd\/yyyy");
-                }
-            }
-            return tableView;
+            tableView = listStudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString()}).ToList();
+            return ChangeDateFormat(tableView, listStudent);
         }
-        public async Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
+        public async Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string Id, string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
         {
             var listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().ToList());
             List<StudentTableViewModel> tableView = new List<StudentTableViewModel>();
             tableView = listStudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString() }).ToList();
 
-            return tableView.Where(a => a.Name.Contains(Name) && a.LastName.Contains(LastName) && a.Age.Contains(Age) && a.RegisteredDate.Contains(RegisteredDate)).ToList();
+            tableView = ChangeDateFormat(tableView, listStudent);
+
+            if (Id != "")
+            return tableView.Where(s => s.Id==Id).ToList();
+
+            return tableView.Where(a =>a.Name.Contains(Name) && a.LastName.Contains(LastName) && a.Age.Contains(Age) && a.RegisteredDate.Contains(RegisteredDate)).ToList();
 
         }
 
@@ -68,10 +64,23 @@ namespace BLL.Providers
             throw new System.NotImplementedException();
         }
 
-        public Task<Status> EditStudentAsync(StudentTableViewModel student, string id)
+        public Task<Status> EditStudentAsync(StudentTableViewModel student, string Id)
         {
             throw new System.NotImplementedException();
 
+        }
+
+        private List<StudentTableViewModel> ChangeDateFormat(List<StudentTableViewModel> tableView, List<Student> listStudent)
+        {
+            foreach (Student s in listStudent)
+            {
+                foreach (StudentTableViewModel sv in tableView)
+                {
+                    sv.RegisteredDate = s.RegisteredDate.ToString(@"MM\/dd\/yyyy");
+                    sv.StudyDate = s.StudyDate.ToString(@"MM\/dd\/yyyy");
+                }
+            }
+            return tableView;
         }
     }
 }

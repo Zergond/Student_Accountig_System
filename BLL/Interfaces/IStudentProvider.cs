@@ -12,10 +12,10 @@ namespace BLL.Interfaces
     {
         Task<Status> DeleteStudentAsync(Student student);
         Task<List<StudentTableViewModel>> GetStudentsAsync();
-        Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string Name, string LastName, string Age, string StudyDate, string RegisteredDate);
+        Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string Id,string Name, string LastName, string Age, string StudyDate, string RegisteredDate);
         Task<Student> GetByIdAsync(string id);
         Task<Status> CreateAsync(Student student);
-        Task<Status> EditStudentAsync(StudentTableViewModel student,string id);
+        Task<Status> EditStudentAsync(StudentTableViewModel student,string Id);
 
     }
     
