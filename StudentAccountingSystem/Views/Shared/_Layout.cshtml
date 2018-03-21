@@ -349,11 +349,7 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/jslayout")
-    <script>
-        $(function () {
-            $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-        })
-    </script>
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

@@ -11,85 +11,77 @@
 
 
 <div id="jsGrid"></div>
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-addon">
+            <i class="fa fa-calendar"></i>
+        </div>
+        <input id="datemask" type="text" class="form-control" data-inputmask="'alias': 'mm/dd/yyyy'" data-mask>
+    </div>
+    <!-- /.input group -->
+</div>
 
 @section scripts {
     <script src="~/Scripts/Admin/jsgrid.min.js"></script>
+    <script src="~/Scripts/Admin/InputMask/jquery.inputmask.min.js"></script>
+    <script src="~/Scripts/Admin/InputMask/jquery.inputmask.date.extensions.min.js"></script>
+    <script src="~/Scripts/Admin/InputMask/jquery.inputmask.extensions.min.js"></script>
+
+
     <script>
-    $(document).ready( $(function(){
-        $("#jsGrid").jsGrid({
-            height: "auto",
-            width: "100%",
+        $(document).ready($(function () {
+            $('#datemask').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+            $("#jsGrid").jsGrid({
+                height: "auto",
+                width: "100%",
 
-            filtering: true,
-            inserting: true,
-            editing: true,
-            sorting: true,
-            paging: true,
-            autoload: true,
+                filtering: false,
+                inserting: false,
+                editing: false,
+                sorting: true,
+                paging: true,
+                autoload: true,
+                pageLoading: true,
 
-            pageSize: 1,
-            pageButtonCount: 5,
+                pageSize: 1,
+                pageIndex: 1,
 
-            deleteConfirm: "Do you really want to delete this student?",
+                deleteConfirm: "Do you really want to delete this student?",
 
-            controller: {
-                loadData: function (filter) {
-                    return $.ajax({
-                        type: "GET",
-                        url: "/Home/GetStudents",
-                        data: filter,
-                        dataType: "JSON"
-                    }).done(function (result) {
-                        debugger;
-                        console.log(result);
-                    });
+                controller: {
+                    loadData: function (filter) {
+                        var def = $.Deferred();
+                         $.ajax({
+                            type: "post",
+                            url: "/Home/GetStudents",
+                            data: filter,
+                            dataType: "json",
+                            success: function (datas) {
+                                var da = {
+                                    data: datas.studentdata,
+                                    itemsCount: datas.count
+                                }
+                                def.resolve(da);
+                            }
+                        });
+                         return def.promise();
+
+                    }
                 },
+            
 
-                insertItem: function(item) {
-                    return $.ajax({
-                        type: "POST",
-                        url: "/api/data",
-                        data:item,
-                        dataType: "json"
-                    });
-                },
+                fields: [
+                    { name: "Id", type: "text", editing: false, width: 150 },
+                    { name: "Name", type: "text", width: 150 },
+                    { name: "LastName", type: "text", width: 150 },
+                    { name: "Age", type: "text", width: 50 },
+                    { name: "RegisteredDate", type: "text", width: 150},
+                    { name: "StudyDate", type: "text", width: 150 },
+                    { type: "control" }
+                ]
+            });
 
-                updateItem: function(item) {
-                    return $.ajax({
-                        type: "PUT",
-                        url: "/api/data/" + item.ID,
-                        data: item,
-                        dataType: "json"
-                    });
-                },
-
-                deleteItem: function(item) {
-                    return $.ajax({
-                        type: "DELETE",
-                        url: "/api/data/" + item.ID,
-                        dataType: "json"
-                    });
-                }
-            },
-
-            fields: [
-                 { name: "Id", type: "text",editing:false, width: 150 },
-                 { name: "Name", type: "text", width: 150 },
-                 { name: "LastName", type: "text", width: 150 },
-                 { name: "Age", type: "text", width: 50 },
-                 {
-                     name: "RegisteredDate", type: "text", width: 150/*, filterTemplate: function (value, item)
-                     {
-                       
-                     }*/
-                         
-                 },
-                 { name: "StudyDate", type: "text", width: 150 },
-                { type: "control" }
-            ]
-        });
-
-    }));
+        }));
     </script>
-    }
+}
 

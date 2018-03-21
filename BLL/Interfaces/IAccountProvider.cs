@@ -11,7 +11,7 @@ namespace BLL.Interfaces
 {
     public interface IAccountProvider
     {
-        Task<SignInStatus> Login(LoginViewModel model, string returnUrl);
+        Task<SignInStatus> Login(LoginViewModel model);
 
         Task<bool> CheckIfEmailConfirmed(LoginViewModel model);
 

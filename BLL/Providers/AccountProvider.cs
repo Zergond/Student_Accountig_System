@@ -34,9 +34,10 @@ namespace BLL.Providers
             _studentProvider = studentProvider;
         }
 
-        public async Task<SignInStatus> Login(LoginViewModel model, string returnUrl)
+        public async Task<SignInStatus> Login(LoginViewModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            AppUser user = _userManager.FindByEmail(model.Email);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
             return result;
         }
 
@@ -54,8 +55,8 @@ namespace BLL.Providers
         }
 
         public async Task<bool> CheckIfEmailConfirmed(LoginViewModel model)
-        {         
-                var user = await _userManager.FindAsync(model.Email, model.Password);
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
                     if (user.EmailConfirmed == true)

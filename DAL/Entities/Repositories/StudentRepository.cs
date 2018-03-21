@@ -23,6 +23,10 @@ namespace DAL.Entities.Repositories
             this.SaveChanges();
             return student;
         }
+        public int Count()
+        {
+           return _context.Students.ToList().Count();
+        }
 
     }
 }

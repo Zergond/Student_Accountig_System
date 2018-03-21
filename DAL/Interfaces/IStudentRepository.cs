@@ -10,5 +10,6 @@ namespace DAL.Interfaces
     public interface IStudentRepository : ISqlRepository
     {
        Student Add(Student student);
+        int Count();
     }
 }

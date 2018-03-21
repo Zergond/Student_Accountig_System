@@ -47,11 +47,9 @@ namespace StudentAccountingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _accountProvider.GetUserIdByEmail(model.Email) != "-1")
-                {
                     if (await _accountProvider.CheckIfEmailConfirmed(model))
                     {
-                        SignInStatus result = await _accountProvider.Login(model, returnUrl);
+                        SignInStatus result = await _accountProvider.Login(model);
                         switch (result)
                         {
                             case SignInStatus.Success:
@@ -61,14 +59,17 @@ namespace StudentAccountingSystem.Controllers
                             case SignInStatus.RequiresVerification:
                                 return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                             case SignInStatus.Failure:
+                            {
+                                ModelState.AddModelError("", "Email or password is incorrect");
+                                return View(model);
+                            }
+                                
                             default:
                                 ModelState.AddModelError("", "Invalid login attempt.");
                                 return View(model);
                         }
                     }
                     else { ModelState.AddModelError("", "Email is not confirmed."); }
-                }
-                else { ModelState.AddModelError("", "User is not exists."); }
             }
 
             return View(model);

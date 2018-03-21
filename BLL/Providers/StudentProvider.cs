@@ -44,21 +44,26 @@ namespace BLL.Providers
             tableView = listStudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString()}).ToList();
             return ChangeDateFormat(tableView, listStudent);
         }
-        public async Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string Id, string Name, string LastName, string Age, string StudyDate, string RegisteredDate)
+        public async Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string pageIndex, string pageSize)
         {
-            var listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().ToList());
+            List<Student> listStudent;
+            int pageindex =Int32.Parse(pageIndex);
+            int pagesize = Int32.Parse(pageSize);
+            if (pageIndex=="1")
+                listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().Take(1).ToList());
+            else
+                listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().OrderBy(s=> s.Id).Skip(pagesize*(pageindex-1)).Take(1).ToList());
+       
             List<StudentTableViewModel> tableView = new List<StudentTableViewModel>();
             tableView = listStudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString() }).ToList();
 
             tableView = ChangeDateFormat(tableView, listStudent);
-
-            if (Id != "")
-            return tableView.Where(s => s.Id==Id).ToList();
-
-            return tableView.Where(a =>a.Name.Contains(Name) && a.LastName.Contains(LastName) && a.Age.Contains(Age) && a.RegisteredDate.Contains(RegisteredDate)).ToList();
-
+            return tableView;
         }
-
+        public int GetStudentsCount()
+        {
+            return _studentRepository.Count();
+        }
         public Task<Student> GetByIdAsync(string id)
         {
             throw new System.NotImplementedException();
