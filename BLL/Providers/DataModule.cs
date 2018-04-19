@@ -10,6 +10,8 @@ using BLL.Interfaces;
 using System.Web;
 using DAL.Entities.Repositories;
 using DAL.Interfaces;
+using System.Data.Entity;
+using Hangfire;
 
 namespace BLL.Providers
 {
@@ -22,6 +24,7 @@ namespace BLL.Providers
         {
             _connStr = connString;
             _app = app;
+            app.UseHangfireDashboard();
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -45,6 +48,10 @@ namespace BLL.Providers
             builder.RegisterType<StudentRepository>().As<IStudentRepository>().InstancePerRequest();
             builder.RegisterType<StudentProvider>().As<IStudentProvider>().InstancePerRequest();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
+
+            builder.RegisterType<Service.SmsService>();
+            builder.RegisterType<Service.EmailService>().InstancePerDependency();
+            builder.RegisterType<Database>().InstancePerBackgroundJob();
 
 
             base.Load(builder);
