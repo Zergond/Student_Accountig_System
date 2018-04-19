@@ -1,0 +1,29 @@
+﻿@model BLL.Models.StudentTableViewModel
+@using BLL.Models
+@{
+    ViewBag.Title = "User Profile Settings";
+}
+
+<h2>UserProfileSettings</h2>
+<script>
+    var def = $.Deferred();
+    $.ajax({
+        type: "get",
+        url: "/Home/GetStudentProfile",
+        dataType: "json",
+        
+        success: function (studentjson) {
+            $("#inputName").val(studentjson.Name)
+        }
+    });
+</script>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="inputName" class="col-sm-1 left control-label">Name</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="inputName" disabled>
+        </div>
+    </div>
+</form>
+
+

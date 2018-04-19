@@ -10,6 +10,7 @@ namespace DAL.Interfaces
     public interface IStudentRepository : ISqlRepository
     {
        Student Add(Student student);
+        Task<Student> GetStudentByIdAsync(string Id);
         int Count();
     }
 }

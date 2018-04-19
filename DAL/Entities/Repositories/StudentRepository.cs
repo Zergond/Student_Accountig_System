@@ -23,6 +23,10 @@ namespace DAL.Entities.Repositories
             this.SaveChanges();
             return student;
         }
+        public Task<Student> GetStudentByIdAsync(string Id)
+        {
+          return Task.Run(()=> _context.Students.SingleOrDefault(e => e.Id == Id));
+        }
         public int Count()
         {
            return _context.Students.ToList().Count();

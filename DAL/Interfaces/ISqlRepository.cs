@@ -12,7 +12,7 @@ namespace DAL.Interfaces
     {
         void Delete<TEntity>(TEntity entity) where TEntity : class;
         IQueryable<TEntity> GetAll<TEntity>() where TEntity : class;
-        TEntity GetById<TEntity>(int id) where TEntity : BaseModel<int>;
+        //TEntity GetById<TEntity>(int id) where TEntity : BaseModel<int>;
         TEntity GetById<TEntity>(string id) where TEntity : BaseModel<string>;
         void Insert<TEntity>(TEntity entity) where TEntity : class;
         void SaveChanges();

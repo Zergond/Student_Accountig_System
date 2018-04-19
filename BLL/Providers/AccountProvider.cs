@@ -70,6 +70,7 @@ namespace BLL.Providers
         public async Task<IdentityResult> Register(RegisterViewModel model)
         {
             IdentityResult result = new IdentityResult();
+            DateTime emptydate = new DateTime(1901,1,1);
             var user = new AppUser
             {
                 UserName = model.Name+" "+model.LastName,
@@ -82,7 +83,7 @@ namespace BLL.Providers
                 Age = model.Age,
                 Name = model.Name,
                 LastName = model.LastName,
-                StudyDate = DateTime.Now,
+                StudyDate = emptydate,
                 RegisteredDate = DateTime.Now
             };
             try

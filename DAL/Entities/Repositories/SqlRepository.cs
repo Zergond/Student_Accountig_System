@@ -43,7 +43,7 @@ namespace DAL.Entities.Repositories
             return GetAll<TEntity>()
                 .SingleOrDefault(e => e.Id == id);
         }
-         public TEntity GetById<TEntity>(string id) where TEntity : BaseModel<string>
+        public TEntity GetById<TEntity>(string id) where TEntity : BaseModel<string>
         {
             return GetAll<TEntity>()
                 .SingleOrDefault(e => e.Id == id);

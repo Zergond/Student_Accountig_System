@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using BLL.Identity;
 using BLL.Interfaces;
 using BLL.Models;
+using DAL.Entities.Identity;
 using DAL.Entities.Models;
+using DAL.Entities.Repositories;
 using DAL.Interfaces;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using static BLL.Identity.Service;
 
 namespace BLL.Providers
 {
@@ -37,20 +43,21 @@ namespace BLL.Providers
             throw new System.NotImplementedException();
         }
 
-        public async Task<List<StudentTableViewModel>> GetStudentsAsync()
+
+        public async Task<StudentTableViewModel> GetCurrentStudentAsync()
         {
-           var listStudent= await Task.Run(() => _studentRepository.GetAll<Student>().ToList());
-            List<StudentTableViewModel> tableView = new List<StudentTableViewModel>();
-            tableView = listStudent.Select(s => new StudentTableViewModel { Id = s.Id, Name = s.Name, LastName = s.LastName, Age = s.Age.ToString(), RegisteredDate = s.RegisteredDate.ToString(), StudyDate = s.StudyDate.ToString()}).ToList();
-            return ChangeDateFormat(tableView, listStudent);
+            var student = await _studentRepository.GetStudentByIdAsync(HttpContext.Current.User.Identity.GetUserId());
+
+            return new StudentTableViewModel { Name = student.Name, LastName = student.LastName, Age = student.Age.ToString(), StudyDate = student.StudyDate.ToString(@"MM\/dd\/yyyy") };
         }
+
         public async Task<List<StudentTableViewModel>> GetStudentsAsyncByFilter(string pageIndex, string pageSize)
         {
             List<Student> listStudent;
             int pageindex =Int32.Parse(pageIndex);
             int pagesize = Int32.Parse(pageSize);
             if (pageIndex=="1")
-                listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().Take(1).ToList());
+                listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().Take(pagesize).ToList());
             else
                 listStudent = await Task.Run(() => _studentRepository.GetAll<Student>().OrderBy(s=> s.Id).Skip(pagesize*(pageindex-1)).Take(1).ToList());
        
